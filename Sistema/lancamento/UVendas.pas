@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, U_LancBase, Data.FMTBcd, Vcl.ImgList,
   Vcl.Menus, Data.DB, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   Vcl.StdCtrls, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls,
-  Vcl.ToolWin, Vcl.Mask, vcl.Wwdbdatetimepicker;
+  Vcl.ToolWin, Vcl.Mask, vcl.Wwdbdatetimepicker,
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup;
 
 type
   TfrmVendas = class(Tfrm_LancBase)
@@ -44,8 +45,8 @@ type
     CDS_ITEMVALORTOTAL: TAggregateField;
     DTSVEN_DATA: TSQLTimeStampField;
     CDSVEN_DATA: TSQLTimeStampField;
-    dtLancamento: TwwDBDateTimePicker;
     lblData: TLabel;
+    dtLancamento: TwwDBDateTimePicker;
     procedure btn_novClick(Sender: TObject);
     procedure Edit1Exit(Sender: TObject);
     procedure Edit2Exit(Sender: TObject);
@@ -68,6 +69,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure dtLancamentoChange(Sender: TObject);
     procedure btn_salClick(Sender: TObject);
+    procedure DExcluir1Click(Sender: TObject);
+    procedure CDS_ITEMAfterDelete(DataSet: TDataSet);
+    procedure btn_canClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -89,7 +93,10 @@ const
   TotalVenda =
     'SELECT SUM(ITE_TOTAL) AS TOTAL FROM ITEM_VENDA WHERE VEN_ID = :VEN_ID';
 begin
-  Result := DMRet.OpenSQL(TotalVenda, [CDSVEN_ID.AsInteger]);
+  if DMRet.OpenSQL(TotalVenda, [CDSVEN_ID.AsInteger]) = null then
+    Result := 0
+  else
+    Result := DMRet.OpenSQL(TotalVenda, [CDSVEN_ID.AsInteger]);
 end;
 
 procedure TfrmVendas.btn_altClick(Sender: TObject);
@@ -98,6 +105,12 @@ begin
 
   HabilitaPanelCabecalho(True);
   dtLancamento.SetFocus;
+end;
+
+procedure TfrmVendas.btn_canClick(Sender: TObject);
+begin
+  inherited;
+//
 end;
 
 procedure TfrmVendas.btn_conClick(Sender: TObject);
@@ -143,6 +156,16 @@ begin
   HabilitaPanelCabecalho(False);
 end;
 
+procedure TfrmVendas.CDS_ITEMAfterDelete(DataSet: TDataSet);
+const
+  UPD_VALOR_TOTAL =
+    'UPDATE VENDA SET VEN_TOTAL = :VALOR WHERE VEN_ID = :VEN_ID';
+begin
+  inherited;
+
+  DMRet.ExecuteSQL(UPD_VALOR_TOTAL, [AtualizaTotal, CDSVEN_ID.AsInteger]);
+end;
+
 procedure TfrmVendas.CDS_ITEMAfterInsert(DataSet: TDataSet);
 begin
   inherited;
@@ -157,8 +180,6 @@ begin
   inherited;
 
   DMRet.ExecuteSQL(UPD_VALOR_TOTAL, [AtualizaTotal, CDSVEN_ID.AsInteger]);
-
-//  lblTotalVenda.Caption := FormatFloat('R$ #,##0.00', AtualizaTotal);
 
   Edit1.SetFocus;
   Edit2.Text := '0,000';
@@ -184,6 +205,11 @@ begin
   inherited;
 
   btn_salClick(sender);
+end;
+
+procedure TfrmVendas.DExcluir1Click(Sender: TObject);
+begin
+  CDS_ITEM.Delete;
 end;
 
 procedure TfrmVendas.DSPAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
@@ -229,6 +255,8 @@ const
     'FROM '+
     '   PRODUTO WHERE PRO_REFERENCIA = :REFERENCIA ';
 begin
+  if not (CDSVEN_ID.AsInteger > 0) then Exit;
+
   if CDS.State in [dsInsert, dsEdit] then
   begin
     if (trim(Edit1.Text) = '') then
@@ -277,6 +305,8 @@ end;
 
 procedure TfrmVendas.Edit2Exit(Sender: TObject);
 begin
+  if not (CDSVEN_ID.AsInteger > 0) then Exit;
+
   if CDS.State in [dsInsert, dsEdit] then
   begin
     if trim(Edit1.Text) = '' then

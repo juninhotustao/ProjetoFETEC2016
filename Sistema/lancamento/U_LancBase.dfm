@@ -247,54 +247,22 @@ object frm_LancBase: Tfrm_LancBase
       ShortCut = 16462
       OnClick = btn_novClick
     end
-    object Cancelar1: TMenuItem
-      Caption = 'Cancelar'
-      Enabled = False
-      ShortCut = 16466
-      Visible = False
-      OnClick = btn_canClick
-    end
-    object Salvar1: TMenuItem
-      Caption = 'Salvar'
-      Enabled = False
-      ShortCut = 16455
-      Visible = False
-      OnClick = btn_salClick
-    end
-    object ConsultaPrVenda1: TMenuItem
-      Caption = 'Consulta'
-      ShortCut = 120
-      OnClick = btn_conClick
-    end
     object Sair1: TMenuItem
       Caption = 'Sair'
       ShortCut = 16467
       OnClick = btn_saiClick
     end
-    object NovoItem1: TMenuItem
-      Caption = 'Novo Item'
-      ShortCut = 113
-    end
-    object CancelarItem1: TMenuItem
-      Caption = 'Cancelar Item'
-      ShortCut = 115
-    end
-    object ConsultaPendentes1: TMenuItem
-      Caption = 'Consulta Pendentes'
-      ShortCut = 119
-      OnClick = ConsultaPendentes1Click
-    end
-    object ConsultaProduto1: TMenuItem
-      Caption = 'Consulta Produto'
-      ShortCut = 116
-      OnClick = ConsultaProduto1Click
+    object ExcluirItem1: TMenuItem
+      Caption = 'Excluir Item'
+      ShortCut = 16452
+      OnClick = ExcluirItem1Click
     end
   end
   object Icones: TImageList
     Left = 268
     Top = 137
     Bitmap = {
-      494C01012C00C001600210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012C00C001640210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

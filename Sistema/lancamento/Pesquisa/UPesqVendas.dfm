@@ -60,6 +60,7 @@ inherited FrmPesqVendas: TFrmPesqVendas
     Width = 578
     Height = 107
     ExplicitTop = 296
+    ExplicitWidth = 578
     ExplicitHeight = 107
     inherited lbl_Periodo: TLabel
       Left = 5

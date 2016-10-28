@@ -15,10 +15,11 @@ type
     CDSVEN_OBSERVACAO: TStringField;
     CDSVEN_DATA: TSQLTimeStampField;
     procedure btn_ConfirmaClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    function GetId: Integer;
   end;
 
 var
@@ -27,7 +28,7 @@ var
 implementation
 
 uses
-  U_DMRet;
+  U_DMRet, UVendas;
 {$R *.dfm}
 
 procedure TFrmPesqVendas.btn_ConfirmaClick(Sender: TObject);
@@ -35,6 +36,8 @@ var
   Params: array of Variant;
 begin
   inherited;
+  CDS.Close;
+
   SetLength(Params, 3);
 
   if chk_datas.Checked then
@@ -58,6 +61,26 @@ begin
   CDS.Params[2].Value := Params[2];
 
   CDS.Open;
+end;
+
+procedure TFrmPesqVendas.DBGrid1DblClick(Sender: TObject);
+begin
+  //Carregar a venda
+  frmVendas.CDS.Params[0].Value := GetId;
+  frmVendas.CDS.Open;
+  frmVendas.CDS.Refresh;
+  //Carregar os itens
+  frmVendas.CDS_ITEM.Params[0].Value := GetId;
+  frmVendas.CDS_ITEM.Open;
+  frmVendas.CDS_ITEM.Refresh;
+
+  inherited;
+end;
+
+function TFrmPesqVendas.GetId: Integer;
+begin
+  Result := CDSVEN_ID.AsInteger;
+
 end;
 
 end.

@@ -23,16 +23,9 @@ type
     DS: TDataSource;
     POP: TPopupMenu;
     NovaPrVenda1: TMenuItem;
-    ConsultaPrVenda1: TMenuItem;
     Sair1: TMenuItem;
-    NovoItem1: TMenuItem;
-    CancelarItem1: TMenuItem;
     btn_can: TToolButton;
     btn_sal: TToolButton;
-    Cancelar1: TMenuItem;
-    Salvar1: TMenuItem;
-    ConsultaPendentes1: TMenuItem;
-    ConsultaProduto1: TMenuItem;
     btn_alt: TToolButton;
     Icones: TImageList;
     btn_exc: TToolButton;
@@ -46,6 +39,7 @@ type
     DS_ITEM: TDataSource;
     Label3: TLabel;
     dbNum_Venda: TDBText;
+    ExcluirItem1: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure CDSAfterPost(DataSet: TDataSet);
     procedure btn_novClick(Sender: TObject);
@@ -72,6 +66,7 @@ type
     procedure CDS_ITEMReconcileError(DataSet: TCustomClientDataSet;
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
+    procedure ExcluirItem1Click(Sender: TObject);
   private
     FFrmLancItem: Tfrm_LancItemBaseClass;
     FFrmPesqLanc: Tfrm_PesqBaseClass;
@@ -204,6 +199,13 @@ begin
     DeltaDS.Fields[0].NewValue := DMRet.OpenSQL('select @@identity', []);
 end;
 
+procedure Tfrm_LancBase.ExcluirItem1Click(Sender: TObject);
+begin
+  if CDS_ITEM.IsEmpty then Exit;
+
+  CDS_ITEM.Delete;
+end;
+
 procedure Tfrm_LancBase.CDSAfterDelete(DataSet: TDataSet);
 begin
   CDS.ApplyUpdates(0);
@@ -286,6 +288,8 @@ begin
         ('Erro ao excluir o(a)' + TipoLancto + '.' + #13#10 + 'Erro: ' +
           E.Message);
   end;
+
+  CDS_ITEM.Close;
 end;
 
 procedure Tfrm_LancBase.btn_canClick(Sender: TObject);
