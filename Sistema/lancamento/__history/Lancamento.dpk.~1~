@@ -1,0 +1,84 @@
+package Lancamento;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Balanca,
+  Biblioteca,
+  devartDAL,
+  Pesquisa,
+  dclOfficeXP,
+  Diversos,
+  Relatorio,
+  Financeiro;
+
+contains
+  U_LancBase in 'U_LancBase.pas' {frm_LancBase},
+  U_DavBase in 'U_DavBase.pas' {frm_DavBase},
+  U_EncerraDavBase in 'U_EncerraDavBase.pas' {frm_EncerraDavBase},
+  U_LancItemBase in 'U_LancItemBase.pas' {frm_LancItemBase},
+  U_ClienteVeic in 'U_ClienteVeic.pas' {frm_ClienteVeic},
+  U_DadosOticaDAV in 'U_DadosOticaDAV.pas' {frm_DadosOticaDAV},
+  U_Dav in 'U_Dav.pas' {frm_Dav},
+  U_DavOs in 'U_DavOs.pas' {frm_DavOs},
+  U_EncerraDav in 'U_EncerraDav.pas' {frm_EncerraDav},
+  U_EncerraDavOs in 'U_EncerraDavOs.pas' {frm_EncerraDavOs},
+  U_Extrato in 'U_Extrato.pas' {frm_Extrato},
+  U_ItemContaCliente in 'U_ItemContaCliente.pas' {frm_ItemContaCliente},
+  U_ItemDav in 'U_ItemDav.pas' {frm_ItemDav},
+  U_ItemDavOs in 'U_ItemDavOs.pas' {frm_ItemDavOs},
+  U_ItemPreVenda in 'U_ItemPreVenda.pas' {frm_ItemPreVenda},
+  U_LancContaCliente in 'U_LancContaCliente.pas' {frm_LancContaCliente},
+  U_ObsCliente in 'U_ObsCliente.pas' {frm_ObsCliente},
+  U_PreVenda in 'U_PreVenda.pas' {frm_PreVenda},
+  U_PrintDav in 'U_PrintDav.pas',
+  U_TransfContaCliente in 'U_TransfContaCliente.pas' {frm_TransfContaCliente},
+  U_PesqLancBase in 'Pesquisa\U_PesqLancBase.pas' {frm_PesqLancBase},
+  U_ConsObsPedido in 'Pesquisa\U_ConsObsPedido.pas' {Frm_ObservacoesPedido},
+  U_PesqDav in 'Pesquisa\U_PesqDav.pas' {frm_PesqDav},
+  U_PesqDavOs in 'Pesquisa\U_PesqDavOs.pas' {frm_PesqDavOs},
+  U_PesqFracProduto in 'Pesquisa\U_PesqFracProduto.pas' {frm_PesqFracProduto},
+  U_PesqPreVenda in 'Pesquisa\U_PesqPreVenda.pas' {frm_PesqPreVenda},
+  U_PedidoBase in 'U_PedidoBase.pas' {frm_PedidoBase},
+  U_PreMoldadosOS in 'U_PreMoldadosOS.pas' {frm_PreMoldadosOS},
+  U_PesqPreMoldadosOs in 'Pesquisa\U_PesqPreMoldadosOs.pas' {frm_PesqPreMoldadosOs},
+  U_ItemOsBase in 'U_ItemOsBase.pas' {frm_ItemOsBase},
+  U_EncerraPedidoBase in 'U_EncerraPedidoBase.pas' {frm_EncerraPedidoBase},
+  U_PesqCotacao in 'Pesquisa\U_PesqCotacao.pas' {frm_PesqCotacao},
+  U_CreditoProduto in 'U_CreditoProduto.pas' {frm_CreditoProduto},
+  U_BaixaCreditoProd in 'U_BaixaCreditoProd.pas' {frm_BaixaCreditoProd},
+  U_ExclBaixaCreditoProd in 'U_ExclBaixaCreditoProd.pas' {frm_ExclBaixaCreditoProd},
+  U_CeramicaOS in 'U_CeramicaOS.pas' {frm_CeramicaOS},
+  U_ItemPreMoldadosOs in 'U_ItemPreMoldadosOs.pas' {frm_ItemPreMoldadosOs},
+  U_ItemCeramicaOs in 'U_ItemCeramicaOs.pas' {frm_ItemCeramicaOs},
+  U_EncerraPedido in 'U_EncerraPedido.pas' {frm_EncerraPedido},
+  U_EncerraPedidoCeramica in 'U_EncerraPedidoCeramica.pas' {frm_EncerraPedidoCeramica};
+
+end.

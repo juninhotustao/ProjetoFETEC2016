@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/06/29 10:36:27.000.404,=D:\Projetos\common\trunk\XE7\cadastro\Unit1.pas</Transaction>
+    <Transaction>2016/06/29 10:36:54.000.331,=D:\Projetos\common\trunk\XE7\cadastro\Unit2.pas</Transaction>
+    <Transaction>2016/06/29 10:50:50.000.444,D:\Projetos\common\trunk\XE7\cadastro\Unit1.dfm=D:\Projetos\common\trunk\XE7\cadastro\Cadastro\Contribuicao PIS COFINS\U_ConOperacoesGerContribPisCofins.dfm</Transaction>
+    <Transaction>2016/06/29 10:50:50.000.444,D:\Projetos\common\trunk\XE7\cadastro\Unit1.pas=D:\Projetos\common\trunk\XE7\cadastro\Cadastro\Contribuicao PIS COFINS\U_ConOperacoesGerContribPisCofins.pas</Transaction>
+    <Transaction>2016/06/29 10:51:26.000.278,D:\Projetos\common\trunk\XE7\cadastro\Unit2.dfm=D:\Projetos\common\trunk\XE7\cadastro\Cadastro\Contribuicao PIS COFINS\U_CadOperacoesGerContribPisCofins.dfm</Transaction>
+    <Transaction>2016/06/29 10:51:26.000.278,D:\Projetos\common\trunk\XE7\cadastro\Unit2.pas=D:\Projetos\common\trunk\XE7\cadastro\Cadastro\Contribuicao PIS COFINS\U_CadOperacoesGerContribPisCofins.pas</Transaction>
+  </Transactions>
+</BorlandProject>

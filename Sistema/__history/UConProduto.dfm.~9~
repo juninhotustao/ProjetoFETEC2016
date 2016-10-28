@@ -1,0 +1,121 @@
+inherited frmConProduto: TfrmConProduto
+  Caption = 'Consulta Produto'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Grid: TDBGrid
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'PRO_REFERENCIA'
+        Title.Caption = 'Refer'#234'ncia'
+        Width = 89
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRO_DESCRICAO'
+        Title.Caption = 'Descri'#231#227'o'
+        Width = 343
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRO_ESTOQUE'
+        Title.Caption = 'Estoque'
+        Width = 87
+        Visible = True
+      end>
+  end
+  inherited dbxDTS: TSQLDataSet
+    SchemaName = 'sa'
+    CommandText = 'SELECT * FROM PRODUTO'
+    object dbxDTSPRO_ID: TIntegerField
+      FieldName = 'PRO_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object dbxDTSPRO_COD_BARRAS: TStringField
+      FieldName = 'PRO_COD_BARRAS'
+      ProviderFlags = [pfInUpdate]
+      Size = 13
+    end
+    object dbxDTSPRO_REFERENCIA: TStringField
+      FieldName = 'PRO_REFERENCIA'
+      ProviderFlags = [pfInUpdate]
+      Size = 9
+    end
+    object dbxDTSPRO_DESCRICAO: TStringField
+      FieldName = 'PRO_DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object dbxDTSPRO_ESTOQUE: TFMTBCDField
+      FieldName = 'PRO_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+      Precision = 12
+      Size = 2
+    end
+    object dbxDTSPRO_PRECO_VENDA: TFMTBCDField
+      FieldName = 'PRO_PRECO_VENDA'
+      ProviderFlags = [pfInUpdate]
+      Precision = 12
+      Size = 2
+    end
+    object dbxDTSPRO_PRECO_CUSTO: TFMTBCDField
+      FieldName = 'PRO_PRECO_CUSTO'
+      ProviderFlags = [pfInUpdate]
+      Precision = 12
+      Size = 2
+    end
+    object dbxDTSPRO_ESTOQUE_MAX: TIntegerField
+      FieldName = 'PRO_ESTOQUE_MAX'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  inherited CDS: TClientDataSet
+    object CDSPRO_ID: TIntegerField
+      FieldName = 'PRO_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object CDSPRO_COD_BARRAS: TStringField
+      FieldName = 'PRO_COD_BARRAS'
+      ProviderFlags = [pfInUpdate]
+      Size = 13
+    end
+    object CDSPRO_REFERENCIA: TStringField
+      FieldName = 'PRO_REFERENCIA'
+      ProviderFlags = [pfInUpdate]
+      Size = 9
+    end
+    object CDSPRO_DESCRICAO: TStringField
+      FieldName = 'PRO_DESCRICAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object CDSPRO_ESTOQUE: TFMTBCDField
+      FieldName = 'PRO_ESTOQUE'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '#,##0.000'
+      Precision = 12
+      Size = 2
+    end
+    object CDSPRO_PRECO_VENDA: TFMTBCDField
+      FieldName = 'PRO_PRECO_VENDA'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '#,##0.000'
+      Precision = 12
+      Size = 2
+    end
+    object CDSPRO_PRECO_CUSTO: TFMTBCDField
+      FieldName = 'PRO_PRECO_CUSTO'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '#,##0.000'
+      Precision = 12
+      Size = 2
+    end
+    object CDSPRO_ESTOQUE_MAX: TIntegerField
+      FieldName = 'PRO_ESTOQUE_MAX'
+      ProviderFlags = [pfInUpdate]
+      DisplayFormat = '#,##0.000'
+    end
+  end
+end

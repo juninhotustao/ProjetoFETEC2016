@@ -1,0 +1,75 @@
+package Pesquisa;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  adortl,
+  devartDAL,
+  vcldb;
+
+contains
+  U_PesqBase in 'U_PesqBase.pas' {frm_PesqBase},
+  U_PesqCliente in 'Cadastros\Cliente\U_PesqCliente.pas' {frm_PesqCliente},
+  U_PesqTipoDocumento in 'Cadastros\Tipo de Documento\U_PesqTipoDocumento.pas' {frm_PesqTipoDocumento},
+  U_PesqClassFinanceira in 'Cadastros\Classificação Financeira\U_PesqClassFinanceira.pas' {frm_PesqClassFinanceira},
+  U_PesqLocal in 'Cadastros\Local\U_PesqLocal.pas' {frm_PesqLocal},
+  U_PesqTransportadora in 'Cadastros\Transportadora\U_PesqTransportadora.pas' {frm_PesqTransportadora},
+  U_PesqPais in 'Cadastros\Pais\U_PesqPais.pas' {frm_PesqPais},
+  U_PesqMunicipio in 'Cadastros\Municipio\U_PesqMunicipio.pas' {frm_PesqMunicipio},
+  U_PesqNCM in 'Cadastros\NCM\U_PesqNCM.pas' {frm_PesqNCM},
+  U_PesqANP in 'Cadastros\ANP\U_PesqANP.pas' {frm_PesqANP},
+  U_PesqFornecedor in 'Cadastros\Fornecedor\U_PesqFornecedor.pas' {frm_PesqFornecedor},
+  U_PesqTanque in 'Cadastros\Tanque\U_PesqTanque.pas' {frm_PesqTanque},
+  U_PesqBico in 'Cadastros\Bico\U_PesqBico.pas' {frm_PesqBico},
+  U_PesqRenavamModelo in 'Cadastros\Renavam Modelo\U_PesqRenavamModelo.pas' {frm_PesqRenavamModelo},
+  U_PesqServico in 'Cadastros\Serviço\U_PesqServico.pas' {frm_PesqServico},
+  U_PesqChaveNFe in 'Cadastros\ChaveNFe\U_PesqChaveNFe.pas' {frm_PesqChaveNFe},
+  U_PesqProduto in 'Cadastros\Produto\U_PesqProduto.pas' {frm_PesqProduto},
+  U_ObservacaoProduto in 'Cadastros\Produto\U_ObservacaoProduto.pas' {frm_ObservacaoProduto},
+  U_CodFabricantePadrao in 'Cadastros\Produto\U_CodFabricantePadrao.pas' {frm_CodFabricantePadrao},
+  U_PesqCombustivel in 'Cadastros\Combustivel\U_PesqCombustivel.pas' {frm_PesqCombustivel},
+  U_PesqLoteProduto in 'Cadastros\Lote\U_PesqLoteProduto.pas' {frm_PesqLoteProduto},
+  U_PesqMedico in 'Cadastros\Medico\U_PesqMedico.pas' {frm_PesqMedico},
+  U_PesqDepartamento in 'Cadastros\Departamento\U_PesqDepartamento.pas' {frm_PesqDepartamento},
+  U_ObservacaoCliente in 'Cadastros\Cliente\U_ObservacaoCliente.pas' {frm_ObservacaoCliente},
+  U_PesqHistoricoPadrao in 'Cadastros\Historico Padrao\U_PesqHistoricoPadrao.pas' {frm_PesqHistoricoPadrao},
+  U_PesqPlanoContas in 'Cadastros\Plano de Contas\U_PesqPlanoContas.pas' {frm_PesqPlanoContas},
+  U_PesqVendedor in 'Cadastros\Vendedor\U_PesqVendedor.pas' {frm_PesqVendedor},
+  U_PesqDocFiscal in 'Cadastros\Documento Fiscal\U_PesqDocFiscal.pas' {frm_PesqDocFiscal},
+  U_PesqTipoAtivMun in 'Cadastros\Tipo Atividade Municipio\U_PesqTipoAtivMun.pas' {frm_PesqTipoAtivMun},
+  U_PesqCNAE in 'Cadastros\CNAE\U_PesqCNAE.pas' {frm_PesqCNAE},
+  U_PesqDocumentos in 'Movimentação\U_PesqDocumentos.pas' {frm_PesqDocumentos},
+  U_PesqMarca in 'Cadastros\Marca\U_PesqMarca.pas' {frm_PesqMarca},
+  U_PesqDocsReceber in 'Movimentação\U_PesqDocsReceber.pas' {frm_PesqDocsReceber},
+  U_PesqCest in 'Cadastros\CEST\U_PesqCest.pas' {frm_PesqCest},
+  U_PesqServicoComunicacao in 'Movimentação\U_PesqServicoComunicacao.pas' {frm_PesqServicoComunicacao},
+  U_PesqPlaca in 'Cadastros\Placa\U_PesqPlaca.pas' {frm_PesqPlaca};
+
+end.

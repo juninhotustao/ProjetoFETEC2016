@@ -1,0 +1,48 @@
+unit U_EncerraPedidoRadio;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, U_EncerraPedidoBase, Data.DB,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Buttons;
+
+type
+  TFrm_EncerraPedidoRadio = class(Tfrm_EncerraPedidoBase)
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  protected
+    procedure Imprimir; override;
+  public
+    { Public declarations }
+  end;
+
+var
+  Frm_EncerraPedidoRadio: TFrm_EncerraPedidoRadio;
+
+implementation
+
+uses
+  DBClient, U_DMRet, MaskUtils, StrUtils, U_FuncUtils, U_RadioOS;
+
+{$R *.dfm}
+
+{ TFrm_EncerraPedidoRadio }
+
+procedure TFrm_EncerraPedidoRadio.FormShow(Sender: TObject);
+begin
+  inherited;
+  edt_Desconto.Enabled := Double(lbl_SubTotal.Field.Value) > 0;
+  edtEntrada.Enabled   := Double(lbl_SubTotal.Field.Value) > 0;
+end;
+
+procedure TFrm_EncerraPedidoRadio.Imprimir;
+begin
+  inherited;
+
+  //fazer impressão aqui.
+
+end;
+
+end.

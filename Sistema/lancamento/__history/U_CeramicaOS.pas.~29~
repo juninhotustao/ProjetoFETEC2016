@@ -1,0 +1,1203 @@
+unit U_CeramicaOS;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, U_PedidoBase, FMTBcd, DB, ImgList, Menus, DBClient, Provider,
+  SqlExpr, StdCtrls, Grids, DBGrids, DBCtrls, Buttons, ExtCtrls, ComCtrls,
+  ToolWin, Mask, ppCtrls, ppPrnabl, ppClass, ppBands, ppCache, ppDB,
+  ppDesignLayer, ppParameter, ppProd, ppReport, ppComm, ppRelatv, ppDBPipe,
+  ppVar, Vcl.Imaging.pngimage, vcl.Wwdbdatetimepicker;
+
+type
+  Tfrm_CeramicaOS = class(Tfrm_PedidoBase)
+    DTSVEN_ID: TIntegerField;
+    DTSVEN_DATA: TSQLTimeStampField;
+    DTSCLI_ID: TIntegerField;
+    DTSVDD_ID: TIntegerField;
+    DTSTPG_ID: TIntegerField;
+    DTSVEN_TIPO: TStringField;
+    DTSVEN_VECTO1: TStringField;
+    DTSVEN_VECTO2: TStringField;
+    DTSVEN_VECTO3: TStringField;
+    DTSVEN_VECTO4: TStringField;
+    DTSVEN_VECTO5: TStringField;
+    DTSVEN_VECTO6: TStringField;
+    DTSVEN_VECTO7: TStringField;
+    DTSVEN_VECTO8: TStringField;
+    DTSVEN_VECTO9: TStringField;
+    DTSVEN_VECTO10: TStringField;
+    DTSVEN_VECTO11: TStringField;
+    DTSVEN_VECTO12: TStringField;
+    DTSVEN_TOTAL: TFMTBCDField;
+    DTSVEN_DESCONTO: TFMTBCDField;
+    DTSVEN_SITUACAO: TStringField;
+    DTSVEN_ENTRADA: TFMTBCDField;
+    DTSVEN_OBSERVACAO: TStringField;
+    DTSTPP_ID: TIntegerField;
+    DTSVEN_ENDER_ENTREGA: TStringField;
+    DTSVEN_NUM_BLOCO: TIntegerField;
+    DTSBAIXADO: TStringField;
+    DTSVEN_DT_ENTREGA: TSQLTimeStampField;
+    DTS_ItemITV_ID: TIntegerField;
+    DTS_ItemVEN_ID: TIntegerField;
+    DTS_ItemVEN_DATA: TSQLTimeStampField;
+    DTS_ItemPRO_ID: TIntegerField;
+    DTS_ItemITV_QTDE: TFMTBCDField;
+    DTS_ItemITV_DESCONTO: TFMTBCDField;
+    DTS_ItemITV_PRECOVENDA: TFMTBCDField;
+    DTS_ItemITV_VALORTOTAL: TFMTBCDField;
+    DTS_ItemITV_COMISSAO: TFMTBCDField;
+    DTS_ItemPRO_CUSTOREAL: TFMTBCDField;
+    DTS_ItemPRO_CUSTO: TFMTBCDField;
+    DTS_ItemITV_UN: TStringField;
+    DTS_ItemITV_TIPO: TStringField;
+    DTS_ItemITV_DESCRICAO: TStringField;
+    DTS_ItemITV_VLRMEDIO: TFMTBCDField;
+    DTS_ItemITV_VLR_RATEIO_DESC: TFMTBCDField;
+    DTS_ItemITV_REFER: TStringField;
+    CDSVEN_ID: TIntegerField;
+    CDSVEN_DATA: TSQLTimeStampField;
+    CDSCLI_ID: TIntegerField;
+    CDSVDD_ID: TIntegerField;
+    CDSTPG_ID: TIntegerField;
+    CDSVEN_TIPO: TStringField;
+    CDSVEN_VECTO1: TStringField;
+    CDSVEN_VECTO2: TStringField;
+    CDSVEN_VECTO3: TStringField;
+    CDSVEN_VECTO4: TStringField;
+    CDSVEN_VECTO5: TStringField;
+    CDSVEN_VECTO6: TStringField;
+    CDSVEN_VECTO7: TStringField;
+    CDSVEN_VECTO8: TStringField;
+    CDSVEN_VECTO9: TStringField;
+    CDSVEN_VECTO10: TStringField;
+    CDSVEN_VECTO11: TStringField;
+    CDSVEN_VECTO12: TStringField;
+    CDSVEN_TOTAL: TFMTBCDField;
+    CDSVEN_DESCONTO: TFMTBCDField;
+    CDSVEN_SITUACAO: TStringField;
+    CDSVEN_ENTRADA: TFMTBCDField;
+    CDSVEN_OBSERVACAO: TStringField;
+    CDSTPP_ID: TIntegerField;
+    CDSVEN_ENDER_ENTREGA: TStringField;
+    CDSVEN_NUM_BLOCO: TIntegerField;
+    CDSBAIXADO: TStringField;
+    CDSVEN_DT_ENTREGA: TSQLTimeStampField;
+    CDSDTS_Item: TDataSetField;
+    CDS_ItemITV_ID: TIntegerField;
+    CDS_ItemVEN_ID: TIntegerField;
+    CDS_ItemVEN_DATA: TSQLTimeStampField;
+    CDS_ItemPRO_ID: TIntegerField;
+    CDS_ItemITV_QTDE: TFMTBCDField;
+    CDS_ItemITV_DESCONTO: TFMTBCDField;
+    CDS_ItemITV_PRECOVENDA: TFMTBCDField;
+    CDS_ItemITV_VALORTOTAL: TFMTBCDField;
+    CDS_ItemITV_COMISSAO: TFMTBCDField;
+    CDS_ItemPRO_CUSTOREAL: TFMTBCDField;
+    CDS_ItemPRO_CUSTO: TFMTBCDField;
+    CDS_ItemITV_UN: TStringField;
+    CDS_ItemITV_TIPO: TStringField;
+    CDS_ItemITV_DESCRICAO: TStringField;
+    CDS_ItemITV_VLRMEDIO: TFMTBCDField;
+    CDS_ItemITV_VLR_RATEIO_DESC: TFMTBCDField;
+    CDS_ItemITV_REFER: TStringField;
+    lkpTipoPedido: TDBLookupComboBox;
+    Label19: TLabel;
+    edtEndEntrega: TDBEdit;
+    Label22: TLabel;
+    lkpTransportadora: TDBLookupComboBox;
+    Label20: TLabel;
+    ToolButton1: TToolButton;
+    btn_pro: TToolButton;
+    DS_TipoPedido: TDataSource;
+    CDS_TipoPedido: TClientDataSet;
+    CDS_TipoPedidoTPP_ID: TIntegerField;
+    CDS_TipoPedidoTPP_NOME: TStringField;
+    CDS_TipoPedidoTPP_GERA_FINANC: TStringField;
+    CDS_TipoPedidoTPP_BAIXA_ESTOQ: TStringField;
+    CDS_TipoPedidoTPP_TIPO: TStringField;
+    DSP_TipoPedido: TDataSetProvider;
+    ToolButton5: TToolButton;
+    btnDevolucao: TToolButton;
+    CDS_ItemTOTAL_PEDIDO: TAggregateField;
+    CDSTOTAL_LIQDO: TFloatField;
+    gb_parcelasdias: TGroupBox;
+    Label64: TLabel;
+    Label65: TLabel;
+    Label33: TLabel;
+    btnVenc: TSpeedButton;
+    wwDBEdit3: TDBEdit;
+    wwDBEdit4: TDBEdit;
+    wwDBEdit5: TDBEdit;
+    wwDBEdit6: TDBEdit;
+    wwDBEdit7: TDBEdit;
+    wwDBEdit8: TDBEdit;
+    wwDBEdit9: TDBEdit;
+    wwDBEdit10: TDBEdit;
+    wwDBEdit11: TDBEdit;
+    wwDBEdit12: TDBEdit;
+    wwDBEdit13: TDBEdit;
+    wwDBEdit14: TDBEdit;
+    CDS_ItemMETRAGEM: TFloatField;
+    DSTrans: TDataSource;
+    CDSTrans: TClientDataSet;
+    DSPTrans: TDataSetProvider;
+    CDSTransTRP_ID: TIntegerField;
+    CDSTransTRP_NOME: TStringField;
+    DTSTRP_ID: TIntegerField;
+    CDSTRP_ID: TIntegerField;
+    CDS_ItemLAJE: TBooleanField;
+    GroupBox1: TGroupBox;
+    btnOrdCarreg: TSpeedButton;
+    GroupBox2: TGroupBox;
+    btnEntrega: TSpeedButton;
+    DTSVEN_CONTATO: TStringField;
+    CDSVEN_CONTATO: TStringField;
+    edt_PrazoEntrega: TDBEdit;
+    Label21: TLabel;
+    repOrcamento: TppReport;
+    ppTitleBand1: TppTitleBand;
+    ppDBText1: TppDBText;
+    ppDBText3: TppDBText;
+    ppLabel1: TppLabel;
+    ppLabel2: TppLabel;
+    ppDBText4: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText5: TppDBText;
+    ppLine1: TppLine;
+    ppLabel16: TppLabel;
+    ppHeaderBand1: TppHeaderBand;
+    ppLabel4: TppLabel;
+    ppDBText6: TppDBText;
+    ppLabel5: TppLabel;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppDBText10: TppDBText;
+    ppDBText11: TppDBText;
+    ppDBText12: TppDBText;
+    ppDBText13: TppDBText;
+    ppLine2: TppLine;
+    ppLabel6: TppLabel;
+    ppDBText14: TppDBText;
+    ppLabel7: TppLabel;
+    ppDBText15: TppDBText;
+    ppLabel8: TppLabel;
+    ppDBText16: TppDBText;
+    ppLabel9: TppLabel;
+    ppDBText17: TppDBText;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppLabel12: TppLabel;
+    ppLabel13: TppLabel;
+    ppLabel14: TppLabel;
+    ppLine3: TppLine;
+    ppLine4: TppLine;
+    ppDetailBand1: TppDetailBand;
+    ppDBText18: TppDBText;
+    ppDBText19: TppDBText;
+    ppDBText20: TppDBText;
+    ppDBText21: TppDBText;
+    ppDBText22: TppDBText;
+    ppFooterBand1: TppFooterBand;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppParameterList1: TppParameterList;
+    pipItens: TppDBPipeline;
+    pipEmp: TppDBPipeline;
+    pipOrcamento: TppDBPipeline;
+    DSEmp: TDataSource;
+    CDSEmp: TClientDataSet;
+    CDSEmpEMP_NOME: TStringField;
+    CDSEmpEMP_FANTASIA: TStringField;
+    CDSEmpEMP_TELEFONE: TStringField;
+    CDSEmpEMP_EMAIL: TStringField;
+    CDSEmpEMP_ENDERECO: TStringField;
+    DSPEmp: TDataSetProvider;
+    pipCliente: TppDBPipeline;
+    ppSummaryBand1: TppSummaryBand;
+    ppLine5: TppLine;
+    ppLabel15: TppLabel;
+    ppDBCalc1: TppDBCalc;
+    ppLabel17: TppLabel;
+    ppDBText2: TppDBText;
+    CDSTipoPagamento: TStringField;
+    Label23: TLabel;
+    edt_Contato: TDBEdit;
+    pipOrcamentoppField34: TppField;
+    ppLine6: TppLine;
+    ppLabel18: TppLabel;
+    ppDBCalc2: TppDBCalc;
+    ppSystemVariable1: TppSystemVariable;
+    DTS_ItemITV_VLRFRETE: TFMTBCDField;
+    CDS_ItemITV_VLRFRETE: TFMTBCDField;
+    CDS_ItemTOTAL_FRETE: TAggregateField;
+    Panel1: TPanel;
+    lbl_VenTotalFrete: TLabel;
+    DBText14: TDBText;
+    DBText15: TDBText;
+    ToolButton2: TToolButton;
+    DTSVEN_PRAZO_ENTREGA: TStringField;
+    CDSVEN_PRAZO_ENTREGA: TStringField;
+    pipOrcamentoppField35: TppField;
+    Label24: TLabel;
+    DBText16: TDBText;
+    CDSCondicaoPagto: TStringField;
+    CondicaoPagto: TppField;
+    ppLabel19: TppLabel;
+    ppLabel20: TppLabel;
+    ppLabel21: TppLabel;
+    ppLabel22: TppLabel;
+    ppLabel23: TppLabel;
+    ppImage1: TppImage;
+    ppImage2: TppImage;
+    lblRegiao: TLabel;
+    lkpRegiao: TDBLookupComboBox;
+    DTSREG_ID: TIntegerField;
+    CDSREG_ID: TIntegerField;
+    DspRegiao: TDataSetProvider;
+    CdsRegiao: TClientDataSet;
+    DsRegiao: TDataSource;
+    CDS_ItemTOTAL_DESCONTO: TAggregateField;
+    procedure btnOrdCarregClick(Sender: TObject);
+    procedure btnVencClick(Sender: TObject);
+    procedure btn_alt2Click(Sender: TObject);
+    procedure btn_altClick(Sender: TObject);
+    procedure btn_encerraClick(Sender: TObject);
+    procedure btn_exc2Click(Sender: TObject);
+    procedure btn_excClick(Sender: TObject);
+    procedure btn_nov2Click(Sender: TObject);
+    procedure btn_novClick(Sender: TObject);
+    procedure btn_salClick(Sender: TObject);
+    procedure wwDBEdit3Exit(Sender: TObject);
+    procedure wwDBEdit3KeyPress(Sender: TObject; var Key: Char);
+    procedure wwDBEdit4Enter(Sender: TObject);
+    procedure btnDevolucaoClick(Sender: TObject);
+    procedure btnEntregueClick(Sender: TObject);
+    procedure lkp_TipoPagtoExit(Sender: TObject);
+    procedure lkp_TipoPagtoClick(Sender: TObject);
+    procedure lkp_ClienteExit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure CDSAfterInsert(DataSet: TDataSet);
+    procedure CDSAfterOpen(DataSet: TDataSet);
+    procedure CDSBeforePost(DataSet: TDataSet);
+    procedure CDSCalcFields(DataSet: TDataSet);
+    procedure CDS_ItemCalcFields(DataSet: TDataSet);
+    procedure CDSVEN_SITUACAOGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure CDS_ItemAfterInsert(DataSet: TDataSet);
+    procedure DSPAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+    procedure CDSVEN_IDGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure btnEntregaClick(Sender: TObject);
+    procedure btn_proClick(Sender: TObject);
+    procedure CDS_ItemAfterDelete(DataSet: TDataSet);
+    procedure CDS_ItemAfterPost(DataSet: TDataSet);
+    procedure CDSAfterCancel(DataSet: TDataSet);
+  private
+    function ValidaCampos: Boolean;
+  public
+    class function PedidoPendente(const APedId : Variant): Boolean; override;
+    function VendaFutura: Boolean;
+  end;
+
+var
+  frm_CeramicaOS: Tfrm_CeramicaOS;
+
+implementation
+
+uses
+  U_ParcelasPorData, U_DMRet, U_FuncUtils, U_PesqPreMoldadosOs, DBXCommon,
+  U_ItemCeramicaOs, U_EncerraPedidoCeramica, U_ImpCeramica, U_ImpCarregamentoCer,
+  U_SystemUsuario;
+
+{%CLASSGROUP 'System.Classes.TPersistent'}
+
+{$R *.dfm}
+
+procedure Tfrm_CeramicaOS.btnDevolucaoClick(Sender: TObject);
+const
+  {$REGION 'SQLs'}
+    MSG =
+      'Tem certeza que deseja efetuar a devolução desta ordem de serviço?'#13+
+      'Obs.: Devolvendo-a os estoques dos seus produtos serão alterados e o contas '+
+      'a receber e caixa serão deletados!';
+
+    MSG_CAIXA =
+      'Existe lançamento de caixa para essa ordem de serviço.'#13+
+      'Se houver a devolução esse lançamento será deletado afetando assim ' +
+      'diretamente o caixa, pois o lançamento não foi gerado hoje.'#13+
+      'Tem certeza que deseja fazer a devolução?';
+
+    MSG_RECEBER =
+      'Existem contas a receber já baixados para esta ordem de serviço.'#13+
+      'Se houver a devolução esses contas a receber juntamente com as baixas ' +
+      'dos mesmos serão deletados afetando assim diretamente o caixa.'#13+
+      'Tem certeza que deseja fazer a devolução?';
+
+    SQL_VERIFICA_CAIXA =
+      'SELECT COUNT(*) FROM LANC_CAIXA WHERE VEN_ID = :VEN_ID AND LCX_DATA <> :TODAY';
+
+    SQL_VERIFICA_RECEBER =
+      'SELECT COUNT(*) FROM RECEBER WHERE VALORRECEBIDO > 0 AND VEN_ID = :VEN_ID';
+
+    SQL_PROD_ENTREGUE =
+      ' SELECT' +
+      '   COUNT(*)' +
+      ' FROM' +
+      '   PRODUTO_ENTREGUE P' +
+      ' INNER JOIN' +
+      '   ITEM_VENDA I ON P.ITV_ID = I.ITV_ID' +
+      ' WHERE' +
+      '   VEN_ID = :VEN_ID';
+
+    SQL_ORD_CARREGAMETNO =
+      ' SELECT' +
+      '   COUNT(*)' +
+      ' FROM' +
+      '   ORDEM_CARREGAMENTO O' +
+      ' INNER JOIN' +
+      '   ITEM_VENDA I ON O.ITV_ID = I.ITV_ID' +
+      ' WHERE' +
+      '   VEN_ID = :VEN_ID';
+
+    SQL_ITEM_VENDA =
+      'SELECT PRO_ID, ITV_QTDE FROM ITEM_VENDA WHERE VEN_ID = :VEN_ID';
+
+    UPD_ESTQ =
+      'UPDATE PRODUTO SET PRO_ESTOQUE = PRO_ESTOQUE + :QTDE WHERE PRO_ID = :PRO_ID';
+
+    DEL_CAIXA =
+      'DELETE FROM LANC_CAIXA WHERE VEN_ID = :VEN_ID';
+
+    DEL_RECEBER =
+      'DELETE FROM RECEBER WHERE VEN_ID = :VEN_ID';
+  {$ENDREGION}
+var
+  Trx: TDBXTransaction;
+begin
+  if CDS.IsEmpty then
+    Exit;
+
+  if PedidoPendente(CDSVEN_ID.Value) or not CDSVEN_DT_ENTREGA.IsNull then
+  begin
+    MessageBox(Handle,
+      'Somente ordem de serviço finalizada pode ser devolvida.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if (CDS_TipoPedidoTPP_TIPO.Value = 'F') and
+     ((DMRet.OpenSQL(SQL_PROD_ENTREGUE, [CDSVEN_ID.Value]) > 0) or
+     (DMRet.OpenSQL(SQL_ORD_CARREGAMETNO, [CDSVEN_ID.Value]) > 0)) then
+  begin
+    MessageBox(Handle,
+      'Já houve movimentação na baixa da venda futura para esta venda, não ' +
+      'sendo possível devolvê-la.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if Application.MessageBox(MSG,'ATENÇÃO!',MB_ICONQUESTION+MB_YESNO+MB_DEFBUTTON2) = IDNO then
+    Exit;
+
+  //Verificando se tem lançamento de caixa e dando um alerta para o usuário
+  if (DMRet.OpenSQL(SQL_VERIFICA_CAIXA, [CDSVEN_ID.Value, Date]) > 0) and
+     (Application.MessageBox(MSG_CAIXA,'ATENÇÃO!',MB_ICONQUESTION+MB_YESNO+MB_DEFBUTTON2) = IDNO) then
+    Exit;
+
+  //Verificando se tem contas a receber baixado e dando um alerta para o usuário
+  if (DMRet.OpenSQL(SQL_VERIFICA_RECEBER, [CDSVEN_ID.Value]) > 0) and
+     (Application.MessageBox(MSG_RECEBER,'ATENÇÃO!',MB_ICONQUESTION+MB_YESNO+MB_DEFBUTTON2) = IDNO) then
+    Exit;
+
+  Trx := DMRet.Con.BeginTransaction;
+  try
+    //voltando os estoques
+    if CDS_TipoPedidoTPP_BAIXA_ESTOQ.Value = 'S' then
+      with TClientDataSet.Create(nil) do
+      try
+        Data := DMRet.GetData(SQL_ITEM_VENDA, [CDS_ItemVEN_ID.Value]);
+
+        while not Eof do
+        begin
+          DMRet.ExecuteSQL(UPD_ESTQ, [
+            FieldByName('ITV_QTDE').AsFloat, FieldByName('PRO_ID').AsInteger
+          ]);
+          Next;
+        end;
+      finally
+        Free;
+      end;
+
+    //deletando caixa
+    DMRet.ExecuteSQL(DEL_CAIXA, [CDSVEN_ID.Value]);
+
+    //deletando contas a receber
+    DMRet.ExecuteSQL(DEL_RECEBER, [CDSVEN_ID.Value]);
+
+    //Voltadando o ordem de serviço para pendente
+    CDS.Edit;
+    CDSVEN_SITUACAO.Value := 'P';
+    CDSBAIXADO.Value      := 'N';
+    CDS.Post;
+
+    DMRet.Con.CommitFreeAndNil(Trx);
+  except
+    on E: Exception do
+    begin
+      DMRet.Con.RollbackFreeAndNil(Trx);
+      raise Exception.Create('Ocorreu um erro ao efetuar a devolução. Erro:'+#13);
+    end;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.btnEntregaClick(Sender: TObject);
+begin
+  inherited;
+
+  if CDS.IsEmpty then
+  begin
+    MessageBox(Handle, 'Não há dados para a geração da entrega.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+//  if PedidoPendente(CDS.Fields[0].AsLargeInt) then
+//  begin
+//    MessageBox(Handle,
+//      'É vedada a emissão de entrega para pedidos não finalizados.',
+//      'AVISO',MB_ICONINFORMATION
+//    );
+//    Exit;
+//  end;
+
+  if VendaFutura then
+    Exit;
+
+  if CDS_Item.IsEmpty then
+  begin
+    MessageBox(Handle,
+      'Lance pelo menos 1 item para imprimir a entrega.',
+      'ATENÇÃO!', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  with TImpCeramica.Create do
+  try
+    Imprimir(CDSVEN_ID.Value);
+  finally
+    Free;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.btnEntregueClick(Sender: TObject);
+var
+  Trx: TDBXTransaction;
+  Msg: string;
+begin
+  if CDS.IsEmpty then
+  begin
+    MessageBox(Handle,
+      'Não existe ordem de serviço para ser entregue.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if PedidoPendente(CDSVEN_ID.Value) then
+  begin
+    MessageBox(Handle,
+      'Somente ordem de serviço finalizada pode ser entregue.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if not CDSVEN_DT_ENTREGA.IsNull then
+  begin
+    MessageBox(Handle,
+      'Esta ordem de serviço já foi entregue.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  Msg := 'Informe a senha de entrega:';
+
+  if TFuncUtils.PasswordInputBox('Atenção!', Msg) <> Params.ParSenhaEntregaOS then
+  begin
+    MessageBox(Handle, 'Senha incorreta!', 'ATENÇÃO!',MB_ICONEXCLAMATION);
+    Exit;
+  end;
+
+  Msg := 'Tem certeza que deseja efetuar a entrega desta ordem de serviço?'#13+
+         'Obs.: Entregando-a não será mais possível efetuar a devolução.';
+
+  if Application.MessageBox(PChar(Msg),'ATENÇÃO!',MB_ICONQUESTION+MB_YESNO+MB_DEFBUTTON2) = IDNO then
+    Exit;
+
+  Trx := DMRet.Con.BeginTransaction;
+  try
+    //Passando a ordem de serviço para entregue
+    CDS.Edit;
+    CDSVEN_DT_ENTREGA.AsDateTime := Date;
+    CDS.Post;
+
+    DMRet.Con.CommitFreeAndNil(Trx);
+  except
+    on E: Exception do
+    begin
+      DMRet.Con.RollbackFreeAndNil(Trx);
+      raise Exception.Create('Ocorreu um erro ao efetuar a devolução. Erro:'+#13);
+    end;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.btnOrdCarregClick(Sender: TObject);
+begin
+  inherited;
+
+  if CDS.IsEmpty then
+  begin
+    MessageBox(Handle, 'Não há dados para a geração da ordem de carregamento.',
+      'AVISO',MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if not CDS.IsEmpty and CDS_Item.IsEmpty then
+  begin
+    MessageBox(Handle,
+      'Para imprimir ordem de carregamento é necessário lançar itens no orçamento!', 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  if VendaFutura then
+    Exit;
+
+  with TImpCarregamentoCer.Create do
+  try
+    Imprimir(CDSVEN_ID.Value);
+  finally
+    Free;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.btnVencClick(Sender: TObject);
+var
+  i: Integer;
+  ParcelasPorData, ParcInformadas: TStringList;
+begin
+  ParcInformadas := TStringList.Create;
+
+  try
+    //Adicionando as parcelas informadas pelo usuário
+    with gb_parcelasdias do
+      for i := 0 to ControlCount - 1 do
+        if (Controls[i] is TDBEdit) and (TDBEdit(Controls[i]).Text <> '') then
+        begin
+          ParcInformadas.Add(TDBEdit(Controls[i]).Text);
+          TDBEdit(Controls[i]).Field.Clear;
+        end;
+    //
+    ParcelasPorData := Tfrm_ParcelasPorData.GetParcelasPorData(
+      CDSVEN_DATA.AsDateTime, ParcInformadas
+    );
+
+    for i := 0 to ParcelasPorData.Count - 1 do
+      CDS.FieldByName('VEN_VECTO'+ IntToStr(i+1)).Value := ParcelasPorData[i];
+    //
+  finally
+    ParcInformadas.Free;
+    ParcelasPorData.Free;
+  end;
+
+  wwDBEdit3.SetFocus;
+
+end;
+
+procedure Tfrm_CeramicaOS.btn_alt2Click(Sender: TObject);
+begin
+  if not PedidoPendente(CDSVEN_ID.AsLargeInt) then
+  begin
+    MessageBox(Handle,
+      pchar(format('Não é possível alterar item se a situação for %s.',
+      [CDSVEN_SITUACAO.Text])), 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.btn_altClick(Sender: TObject);
+begin
+  if not PedidoPendente(CDSVEN_ID.AsLargeInt) then
+  begin
+    MessageBox(Handle,
+      pchar(format('Não é possível alterar a ordem de serviço se a situação for %s.',
+      [CDSVEN_SITUACAO.Text])), 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  inherited;
+end;
+procedure Tfrm_CeramicaOS.btn_encerraClick(Sender: TObject);
+{$REGION 'SQL'}
+const
+  SQL =
+    ' SELECT' +
+    '   PRO_DESCRICAO' +
+    ' FROM' +
+    '   ITEM_VENDA I' +
+    ' LEFT JOIN' +
+    '   ORDEM_CARREGAMENTO O ON I.ITV_ID = O.ITV_ID' +
+    ' INNER JOIN' +
+    '   PRODUTO P ON I.PRO_ID = P.PRO_ID' +
+    ' WHERE' +
+    '   P.PRO_LAJE = ''S'' AND I.VEN_ID = :VEN_ID' +
+    ' GROUP BY' +
+    '   I.ITV_ID, PRO_DESCRICAO' +
+    ' HAVING' +
+    '   COUNT(I.ITV_ID) > 0 AND COUNT(O.ORD_ID) = 0';
+
+  SQL_LIMITE_COMPRAS =
+    ' SELECT '+
+    '   C.CLI_ID, MAXCOMPRAS, SUM(DEBITOS) AS DEBITO '+
+    ' FROM '+
+    '   VW_LIBERACAOTEMPORARIA V '+
+    ' INNER JOIN '+
+    '   CLIENTES C ON (C.CLI_ID = V.CLI_ID) '+
+    ' WHERE '+
+    '   V.CLI_ID = :CLI_ID '+
+    ' GROUP BY '+
+    '   C.CLI_ID, MAXCOMPRAS ';
+{$ENDREGION}
+var
+  DescProdutos: string;
+begin
+  if CDS_TipoPedidoTPP_TIPO.Value <> 'F' then
+  begin
+    if not CDS.IsEmpty and CDS_Item.IsEmpty then
+    begin
+      MessageBox(Handle,
+        'Não é possível encerrar uma ordem de serviço sem pelo menos um ' +
+        'item lançado.', 'AVISO', MB_ICONINFORMATION
+      );
+      Exit;
+    end;
+
+    with TClientDataSet.Create(nil) do
+    try
+      Data := DMRet.GetData(SQL,[CDSVEN_ID.Value]);
+
+      DescProdutos := '';
+      while not Eof do
+      begin
+        DescProdutos := DescProdutos+#13+Fields[0].AsString;
+        Next;
+      end;
+
+      if DescProdutos <> '' then
+      begin
+        MessageBox(Handle,
+          pchar('Os itens abaixo discriminados são do tipo laje e não foram lançados ' +
+          'ordem de carregamento. Para encerrar lançe a ordem de carregamento ' +
+          'para os mesmos.' + DescProdutos), 'AVISO', MB_ICONINFORMATION
+        );
+        Exit;
+      end;
+    finally
+      Free;
+    end;
+  end;
+
+  with TClientDataSet.Create(nil) do
+  try
+    Data := DMRet.GetData(SQL_LIMITE_COMPRAS, [CDSCLI_ID.Value]);
+
+    if ds.DataSet.FieldByName('VEN_SITUACAO').Value = 'F' then
+    begin
+     ShowMessage('Não é possível finalizar um cerâmica já finalizado!');
+     exit;
+    end;
+
+    //Verifica se o Limite foi Ultrapassado
+    if (self.Params.ParOrcBloqueaVenda = 'S') and (DS.DataSet.FieldByName('VEN_TIPO').AsString <> 'V') then
+    begin
+     if not(FieldByName('maxcompras').IsNull) and not(FieldByName('maxcompras').value = 0) and
+        (FieldByName('debito').value + CDS_ItemTOTAL_PEDIDO.Value >= (FieldByName('maxcompras').value)) then
+     begin
+       ShowMessage('VALOR MÁXIMO DE COMPRAS EXCEDIDO!');
+
+       if TFuncUtils.PasswordInputBox('Libera Cliente com Limite de Compras Excedido','Digite a senha de Liberação:') <> Self.Params.ParSenhaLibera  then
+       begin
+          MessageBox(handle,'Operação Inválida! Senha Incorreta!',Pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
+          Exit;
+       end;
+     end;
+    end;
+  finally
+   Free;
+  end;
+
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.btn_exc2Click(Sender: TObject);
+begin
+  if not PedidoPendente(CDSVEN_ID.AsLargeInt) then
+  begin
+    MessageBox(Handle,
+      pchar(format('Não é possível excluir item se a situação for %s.',
+      [CDSVEN_SITUACAO.Text])), 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.btn_excClick(Sender: TObject);
+begin
+  if not PedidoPendente(CDSVEN_ID.AsLargeInt) then
+  begin
+    MessageBox(Handle,
+      pchar(format('Não é possível excluir a ordem de serviço se a situação for %s.',
+      [CDSVEN_SITUACAO.Text])), 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.btn_nov2Click(Sender: TObject);
+begin
+  if not PedidoPendente(CDSVEN_ID.AsLargeInt) then
+  begin
+    MessageBox(Handle,
+      pchar(format('Não é possível inserir item se a situação for %s.',
+      [CDSVEN_SITUACAO.Text])), 'AVISO', MB_ICONINFORMATION
+    );
+    Exit;
+  end;
+
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.btn_novClick(Sender: TObject);
+begin
+  inherited;
+  edt_data.SetFocus;
+end;
+
+procedure Tfrm_CeramicaOS.btn_proClick(Sender: TObject);
+begin
+  if CDS.IsEmpty then
+  begin
+    Application.MessageBox('Não existe Orçamentos para imprimir!',
+      PChar(Application.Title),MB_ICONINFORMATION+MB_OK);
+    Exit;
+  end;
+
+  if CDS_Item.IsEmpty then
+  begin
+    Application.MessageBox('Insira itens para imprimir proposta de orçamento!',
+      PChar(Application.Title),MB_ICONINFORMATION+MB_OK);
+    Exit;
+  end;
+
+  if CDSVEN_SITUACAO.AsString[1] <> 'P' then
+  begin
+    Application.MessageBox('A proposta será impressa somente para pedidos pendentes!',
+      PChar(Application.Title),MB_ICONINFORMATION+MB_OK);
+    Exit;
+  end;
+
+  CDSEmp.Open;
+  try
+    repOrcamento.Print;
+  finally
+    CDSEmp.Close;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.btn_salClick(Sender: TObject);
+begin
+  if (ActiveControl is TDBEdit) and Assigned(TDBEdit(ActiveControl).OnExit) then
+    TDBEdit(ActiveControl).OnExit(ActiveControl);
+
+  if (ActiveControl is TDBLookupComboBox) and
+     Assigned(TDBLookupComboBox(ActiveControl).OnExit) then
+    TDBLookupComboBox(ActiveControl).OnExit(ActiveControl);
+
+  if not ValidaCampos then
+    Exit;
+  //
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.CDSAfterCancel(DataSet: TDataSet);
+begin
+  inherited;
+  lkp_TipoPagtoClick(Self);
+end;
+
+procedure Tfrm_CeramicaOS.CDSAfterInsert(DataSet: TDataSet);
+var
+  i: Integer;
+begin
+  inherited;
+  CDSVEN_DATA.AsDateTime := Date;
+  CDSVEN_SITUACAO.Value  := 'P';
+
+  for i := 0 to CDS.FieldCount - 1 do
+    if (CDS.Fields[i] is TIntegerField) then
+      Continue
+    else if CDS.Fields[i] is TFMTBCDField then
+      CDS.Fields[i].AsFloat := 0;
+
+  lkp_TipoPagtoClick(Self);
+end;
+
+procedure Tfrm_CeramicaOS.CDSAfterOpen(DataSet: TDataSet);
+begin
+  inherited;
+  lkp_TipoPagtoClick(Self);
+end;
+
+procedure Tfrm_CeramicaOS.CDSBeforePost(DataSet: TDataSet);
+var
+  i: Integer;
+begin
+  inherited;
+  CDSVEN_TIPO.Value  := CDS_TipoPagtoTPG_PAGAMENTO.Value;
+
+  if CDS_TipoPagtoTPG_PAGAMENTO.Value = 'V' then
+  begin
+    CDSVEN_ENTRADA.AsFloat := 0;
+
+    with gb_parcelasdias do
+      for i := 0 to ControlCount - 1 do
+      begin
+        if not(Controls[i] is TDBEdit) then
+          Continue;
+        //
+        TDBEdit(Controls[i]).Field.Clear;
+      end;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.CDSCalcFields(DataSet: TDataSet);
+var
+  Total: Double;
+  j: integer;
+  CondPagto: string;
+begin
+  inherited;
+
+  if CDS_Item.IsEmpty then
+    Total := 0
+  else
+    Total := CDS_ItemTOTAL_PEDIDO.Value;
+  //
+  CDSTOTAL_LIQDO.Value := Total - CDSVEN_DESCONTO.AsFloat - CDSVEN_ENTRADA.AsFloat;
+
+  //Configura a condição de pagamento para a proposta de orçamento.
+  CDSCondicaoPagto.Value := '';
+
+  for j := 0 to CDS.FieldCount - 1 do
+  begin
+    if CDS.Fields[j].Origin = '1' then
+      if cds.Fields[j].AsString <> '' then
+        CondPagto := CondPagto + CDS.Fields[j].AsString + '/';
+  end;
+
+  Delete(CondPagto, Length(CondPagto), 1);
+
+  if CondPagto = '' then
+    CondPagto := 'Pagamento à vista'
+  else
+    CondPagto := CondPagto + ' dias';
+
+  CDSCondicaoPagto.AsString := CondPagto;
+end;
+
+procedure Tfrm_CeramicaOS.CDSVEN_IDGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  inherited;
+
+  if Sender.IsNull then
+    Text := 'Automático'
+  else
+    Text := Sender.Value;
+end;
+
+procedure Tfrm_CeramicaOS.CDSVEN_SITUACAOGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+  if Sender.IsNull then Exit;
+  //
+  case Sender.AsString[1] of
+    'P': Text := 'PENDENTE';
+    'F':
+    begin
+      if CDSVEN_DT_ENTREGA.IsNull then
+        Text := 'FINALIZADO'
+      else
+        Text := 'ENTREGUE';
+    end;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.CDS_ItemAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  CDS.Edit;
+
+  if CDS_ItemTOTAL_PEDIDO.IsNull then
+    CDSVEN_TOTAL.AsFloat := 0
+  else
+    CDSVEN_TOTAL.AsVariant := CDS_ItemTOTAL_PEDIDO.AsVariant;
+  //
+  CDS.Post;
+end;
+
+procedure Tfrm_CeramicaOS.CDS_ItemAfterInsert(DataSet: TDataSet);
+begin
+  inherited;
+  CDS_ItemITV_QTDE.AsFloat            := 1;
+  CDS_ItemITV_PRECOVENDA.AsFloat      := 0;
+  CDS_ItemITV_VALORTOTAL.AsFloat      := 0;
+  CDS_ItemITV_VLR_RATEIO_DESC.AsFloat := 0;
+  CDS_ItemITV_DESCONTO.AsFloat        := 0;
+  CDS_ItemITV_COMISSAO.AsFloat        := 0;
+  CDS_ItemITV_TIPO.Value              := 'S';
+  CDS_ItemVEN_DATA.Value              := CDSVEN_DATA.Value;
+  CDS_ItemITV_VLRFRETE.Value          := 0;
+
+end;
+
+procedure Tfrm_CeramicaOS.CDS_ItemAfterPost(DataSet: TDataSet);
+begin
+  CDSVEN_TOTAL.AsVariant := CDS_ItemTOTAL_PEDIDO.AsVariant;
+  inherited;
+end;
+
+procedure Tfrm_CeramicaOS.CDS_ItemCalcFields(DataSet: TDataSet);
+const
+  SqlItem =
+    'select REFERENCIA, METRAGEM, LAJE from VW_ITEM where TIPO = 0 and ID = :ID';
+
+  SQL_COUNT =
+    ' SELECT' +
+    '   COUNT(*)' +
+    ' FROM' +
+    '   ITEM_VENDA' +
+    ' WHERE' +
+    '   VEN_ID = :VEN_ID AND ITV_ID <= :ITV_ID';
+begin
+  //DataSet.FieldByName('NUM_ITEM').AsInteger := Dataset.RecNo;
+
+  DataSet.FieldByName('NUM_ITEM').Value := DMRet.OpenSQL(SQL_COUNT,[
+    DataSet.FieldByName('VEN_ID').Value, DataSet.FieldByName('ITV_ID').Value
+  ]);
+
+  if (DataSet.State <> dsInternalCalc) or (DataSet.FieldByName('PRO_ID').IsNull) then
+    Exit;
+  //
+  with TClientDataSet.Create(nil) do
+  try
+    Data :=  DMRet.GetData(SqlItem,[DataSet.FieldByName('PRO_ID').Value]);
+    //
+    DataSet.FieldByName('REFERENCIA').AsString := Fields[0].AsString;
+    DataSet.FieldByName('METRAGEM').AsFloat    := Fields[1].AsFloat;
+    DataSet.FieldByName('LAJE').AsBoolean      := Fields[2].AsString = 'S';
+  finally
+    Free;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.DSPAfterUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  if UpdateKind <> ukInsert then Exit;
+
+  if DeltaDS.Fields[0].IsNull then
+  begin
+    if DeltaDS.Fields[0].FieldName = 'VEN_ID' then
+      DeltaDS.Fields[0].NewValue := DMRet.OpenSQL('select IDENT_CURRENT(''VENDA'')', [])
+    else
+      DeltaDS.Fields[0].NewValue := DMRet.OpenSQL('select IDENT_CURRENT(''ITEM_VENDA'')', []);
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FTipoLancto    := 'Cerâmica';
+  LancItemBase   := Tfrm_ItemCeramicaOs;
+  PesqLancBase   := Tfrm_PesqPreMoldadosOs;
+  EncerraDavBase := Tfrm_EncerraPedidoCeramica;
+end;
+
+procedure Tfrm_CeramicaOS.FormShow(Sender: TObject);
+begin
+  inherited;
+
+  CDS_TipoPedido.Open;
+  CDSTrans.Open;
+  CdsRegiao.Open;
+
+  {verifica se libera o botão "encerrar" para o usuário logado
+  de acordo com a permissão atribuída no cadastro de usuário,
+  lembrando que o usuário "admin" sempre poderá utilizar este botão}
+  if TUsuario.Id > 0  then
+    btn_encerra.Enabled := TUsuario.EncerraPDACeramica;
+end;
+
+procedure Tfrm_CeramicaOS.lkp_ClienteExit(Sender: TObject);
+begin
+  inherited;
+
+  //carrega o vendedor referente ao cliente
+  lkp_Vendedor.KeyValue := CDS_ClienteVDD_ID.Value;
+end;
+
+procedure Tfrm_CeramicaOS.lkp_TipoPagtoClick(Sender: TObject);
+begin
+  inherited;
+  gb_parcelasdias.Visible := not VarIsNull(lkp_TipoPagto.KeyValue) and
+    (Cds_TipoPagtoTPG_PAGAMENTO.AsString[1] in ['P', 'C']);
+end;
+
+procedure Tfrm_CeramicaOS.lkp_TipoPagtoExit(Sender: TObject);
+begin
+  inherited;
+  if gb_parcelasdias.Visible and pnl_Cabecalho.Enabled then
+    wwDBEdit3.SetFocus;
+end;
+
+class function Tfrm_CeramicaOS.PedidoPendente(const APedId: Variant): Boolean;
+const
+  SqlSituacao = 'select VEN_SITUACAO from VENDA where VEN_ID = :VEN_ID';
+var
+  Situacao : Variant;
+begin
+  Result   := True;
+  Situacao := DMRet.OpenSQL(SqlSituacao,[APedId]);
+  //
+  if not VarIsNull(Situacao) and (VarToStr(Situacao) = 'F') then
+    Result := False;
+end;
+
+function Tfrm_CeramicaOS.ValidaCampos: Boolean;
+const
+  SQL =
+    ' SELECT' +
+    '   COUNT(*)' +
+    ' FROM' +
+    '   VENDA' +
+    ' WHERE' +
+    '   VEN_ID <> :VEN_ID AND VEN_NUM_BLOCO = :NUM_BLOCO';
+begin
+  Result := True;
+
+  if not CDSTPG_ID.IsNull and (CDSVEN_VECTO1.AsString = '') and
+     (CDS_TipoPagtoTPG_PAGAMENTO.AsString[1] in ['P', 'C']) then
+  begin
+    Application.MessageBox('Operação inválida! É obrigatório informar no mínimo uma parcela.',
+      PChar(Application.Title),MB_ICONINFORMATION+MB_OK);
+    wwDBEdit3.SetFocus;
+    Result := False;
+    Exit;
+  end;
+end;
+
+function Tfrm_CeramicaOS.VendaFutura: Boolean;
+begin
+  Result := False;
+  if CDS_TipoPedidoTPP_TIPO.Value = 'F' then
+  begin
+    Application.MessageBox('Operação não permitida para venda futura.',
+      PChar(Application.Title),MB_ICONINFORMATION+MB_OK);
+    Result := True;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.wwDBEdit3Exit(Sender: TObject);
+var
+  edt : TDBEdit;
+begin
+  inherited;
+  edt := TDBEdit(Sender);
+
+  if (edt.Text = '') then
+  begin
+    if (edt <> wwDBEdit14) and (TDBEdit(Components[edt.ComponentIndex+1]).Text <> '') then
+    begin
+      edt.SetFocus;
+      Abort;
+    end;
+  end
+  else if StrToInt(edt.Text) = 0 then
+  begin
+    ShowMessage('A parcela tem que ser igual ou superior a 1!');
+    edt.SetFocus;
+    Abort;
+  end;
+end;
+
+procedure Tfrm_CeramicaOS.wwDBEdit3KeyPress(Sender: TObject; var Key: Char);
+var
+  edt: TDBEdit;
+begin
+  inherited;
+
+  edt := TDBEdit(Sender);
+
+  if (key = #13) and ((edt = wwDBEdit14) or ((edt.Text = '') and
+     (TDBEdit(Components[edt.ComponentIndex+1]).Text = '')))
+  then
+    edtEndEntrega.SetFocus;
+  //
+  if not(key in ['0'..'9', chr(8)]) then key := #0;
+end;
+
+procedure Tfrm_CeramicaOS.wwDBEdit4Enter(Sender: TObject);
+var
+  i: Integer;
+begin
+  inherited;
+  with gb_parcelasdias do
+    for i := 0 to ControlCount - 1 do
+    begin
+      if not(Controls[i] is TDBEdit) then
+        Continue;
+      //
+      if Controls[i] = Sender then
+        Exit;
+      //
+      if TDBEdit(Controls[i]).Text = '' then
+      begin
+        TDBEdit(Controls[i]).SetFocus;
+        Exit;
+      end;
+    end;
+end;
+
+end.

@@ -1,0 +1,7 @@
+inherited FrmPesqVendas: TFrmPesqVendas
+  Caption = 'Pesquisa de Vendas'
+  ExplicitWidth = 649
+  ExplicitHeight = 458
+  PixelsPerInch = 96
+  TextHeight = 13
+end

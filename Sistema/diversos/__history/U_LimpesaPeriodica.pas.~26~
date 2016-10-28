@@ -1,0 +1,249 @@
+unit U_LimpesaPeriodica;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls;
+
+type
+  Tfrm_LimpesaPeriodica = class(TForm)
+    gb_periodo: TGroupBox;
+    dt_final: TDateTimePicker;
+    lbl_periodo: TLabel;
+    btn_confirma: TBitBtn;
+    btn_cancela: TBitBtn;
+    rg_tabelas: TGroupBox;
+    chk_OrcVenda: TCheckBox;
+    chk_MovEstLoja: TCheckBox;
+    chk_EntMerc: TCheckBox;
+    chk_SaiMerc: TCheckBox;
+    chk_SaiServ: TCheckBox;
+    chk_PedCompra: TCheckBox;
+    chk_Reducoes: TCheckBox;
+    chk_SerieD: TCheckBox;
+    chk_Frete: TCheckBox;
+    chk_Cupons: TCheckBox;
+    chk_Receber: TCheckBox;
+    chk_Pagar: TCheckBox;
+    chk_CaixaBanco: TCheckBox;
+    chk_todos: TCheckBox;
+    chk_VerificaLog: TCheckBox;
+    chk_EmissaoCheque: TCheckBox;
+    chk_Credito: TCheckBox;
+    pnl_Aguarde: TPanel;
+    procedure btn_cancelaClick(Sender: TObject);
+    procedure chk_todosClick(Sender: TObject);
+    procedure btn_confirmaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+    procedure HabilitaLimpPeriodica(Habilita: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_LimpesaPeriodica: Tfrm_LimpesaPeriodica;
+
+implementation
+
+uses U_DMRet, U_InsLog;
+
+{$R *.dfm}
+
+procedure Tfrm_LimpesaPeriodica.btn_cancelaClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure Tfrm_LimpesaPeriodica.chk_todosClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount - 1 do
+  Begin
+    try
+      if (Self.Components[i] is TCheckBox) then
+        TCheckBox(Self.Components[i]).Checked := chk_todos.Checked;
+    except
+    end;
+  end;
+end;
+
+procedure Tfrm_LimpesaPeriodica.btn_confirmaClick(Sender: TObject);
+const
+  SP_LIMPEZA_PERIODICA =
+    ' exec LIMPEZA_PERIODICA :DTFIN, :VENDA, :LANC, :ENTRADA, :SAIDA, :SERV, :PEDIDO, :REDUCOES, '+
+    '   :FRETE, :SERIED, :MESTRE, :RECEBER, :PAGAR, :CAIXA, :LOG, :CHEQUE, :CREDITO ';
+var
+  i: Integer;
+  sTexto: String;
+  LimpTabelas: array[0..15] of Variant;
+begin
+
+  if MessageBox(Handle, 'Deseja Limpar a(s) Tabela(s)?', 'ATENÇÃO',
+    MB_ICONQUESTION + MB_YESNO) = IDYES then
+    if MessageBox(Handle, 'Tem certeza que Deseja Limpar a(s) Tabela(s)?',
+      'ATENÇÃO', MB_ICONQUESTION + MB_YESNO) = IDYES then
+      if MessageBox(Handle,
+        'Limpando a(s) Tabela(s) os Dados Não Poderão Ser Retornados' +
+          #13'Deseja Limpar?', 'ATENÇÃO', MB_ICONQUESTION + MB_YESNO)
+        = IDYES then
+      begin
+        try
+          Update;
+          pnl_Aguarde.Visible := true;
+          Update;
+
+          HabilitaLimpPeriodica(true);
+
+          if chk_todos.Checked then
+            for i := 0 to Self.ComponentCount - 1 do
+            Begin
+              try
+                if (Self.Components[i] is TCheckBox) then
+                  TCheckBox(Self.Components[i]).Checked := chk_todos.Checked;
+              except
+              end;
+            end;
+
+          if chk_OrcVenda.Checked then
+            LimpTabelas[0] := 'S'
+          else
+            LimpTabelas[0] := 'N';
+
+          if chk_MovEstLoja.Checked then
+            LimpTabelas[1] := 'S'
+          else
+            LimpTabelas[1] := 'N';
+
+          if chk_EntMerc.Checked then
+            LimpTabelas[2] := 'S'
+          else
+            LimpTabelas[2] := 'N';
+
+          if chk_SaiMerc.Checked then
+            LimpTabelas[3] := 'S'
+          else
+            LimpTabelas[3] := 'N';
+
+          if chk_SaiServ.Checked then
+            LimpTabelas[4] := 'S'
+          else
+            LimpTabelas[4] := 'N';
+
+          if chk_PedCompra.Checked then
+            LimpTabelas[5] := 'S'
+          else
+            LimpTabelas[5] := 'N';
+
+          if chk_Reducoes.Checked then
+            LimpTabelas[6] := 'S'
+          else
+            LimpTabelas[6] := 'N';
+
+          if chk_Frete.Checked then
+            LimpTabelas[7] := 'S'
+          else
+            LimpTabelas[7] := 'N';
+
+          if chk_SerieD.Checked then
+            LimpTabelas[8] := 'S'
+          else
+            LimpTabelas[8] := 'N';
+
+          if chk_Cupons.Checked then
+            LimpTabelas[9] := 'S'
+          else
+            LimpTabelas[9] := 'N';
+
+          if chk_Receber.Checked then
+            LimpTabelas[10] := 'S'
+          else
+            LimpTabelas[10] := 'N';
+
+          if chk_Pagar.Checked then
+            LimpTabelas[11] := 'S'
+          else
+            LimpTabelas[11] := 'N';
+
+          if chk_CaixaBanco.Checked then
+            LimpTabelas[12] := 'S'
+          else
+            LimpTabelas[12] := 'N';
+
+          if chk_VerificaLog.Checked then
+            LimpTabelas[13] := 'S'
+          else
+            LimpTabelas[13] := 'N';
+
+          if chk_EmissaoCheque.Checked then
+            LimpTabelas[14] := 'S'
+          else
+            LimpTabelas[14] := 'N';
+
+          if chk_Credito.Checked then
+            LimpTabelas[15] := 'S'
+          else
+            LimpTabelas[15] := 'N';
+
+          try
+            //Executa Procedure para limpeza dos dados
+            DMRet.ExecuteSQL(SP_LIMPEZA_PERIODICA, [dt_final.Date, LimpTabelas[0], LimpTabelas[1],
+             LimpTabelas[2], LimpTabelas[3], LimpTabelas[4], LimpTabelas[5], LimpTabelas[6],
+             LimpTabelas[7], LimpTabelas[8], LimpTabelas[9], LimpTabelas[10], LimpTabelas[11],
+             LimpTabelas[12], LimpTabelas[13], LimpTabelas[14], LimpTabelas[15]]
+             );
+             sTexto :=
+              'Foram excluídos os dados no período antes de ' + DateToStr(dt_final.Date);
+             TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+          except
+             Application.MessageBox('Erro ao tentar limpar os dados!', PChar
+              (Application.Title), MB_ICONINFORMATION + MB_OK);
+          end;
+
+          Application.MessageBox('Operação concluida com sucesso!', PChar
+              (Application.Title), MB_ICONINFORMATION + MB_OK);
+
+        finally
+          HabilitaLimpPeriodica(False);
+
+          Update;
+          pnl_Aguarde.Visible := False;
+          Update;
+        end;
+      end;
+  //
+end;
+
+procedure Tfrm_LimpesaPeriodica.FormCreate(Sender: TObject);
+begin
+  dt_final.Date := Date;
+
+  pnl_Aguarde.Align := alClient;
+end;
+
+procedure Tfrm_LimpesaPeriodica.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_RETURN:
+      Perform(WM_NEXTDLGCTL, 0, 0);
+    VK_ESCAPE:
+      close;
+  end;
+end;
+
+procedure Tfrm_LimpesaPeriodica.HabilitaLimpPeriodica(Habilita: Boolean);
+const
+  SQL_LIMP = 'update params set par_limperiodica = :param';
+begin
+  if Habilita then
+    DMRet.ExecuteSQL(SQL_LIMP, ['S'])
+  else
+    DMRet.ExecuteSQL(SQL_LIMP, ['N']);
+end;
+
+end.

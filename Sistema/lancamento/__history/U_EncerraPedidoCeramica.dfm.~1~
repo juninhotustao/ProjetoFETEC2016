@@ -1,0 +1,38 @@
+inherited frm_EncerraPedidoCeramica: Tfrm_EncerraPedidoCeramica
+  Caption = 'Encerra Ordem de Servi'#231'o - Cer'#226'mica'
+  ExplicitWidth = 427
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited btn_Encerra: TBitBtn
+      Top = 6
+      ExplicitTop = 6
+    end
+  end
+  inherited Panel3: TPanel
+    inherited Label4: TLabel
+      Visible = False
+    end
+    inherited lblDescPerc: TLabel
+      Visible = False
+    end
+    inherited rgTipoDesc: TRadioGroup
+      Visible = False
+    end
+  end
+  inherited DS_Item: TDataSource
+    DataSet = frm_CeramicaOS.CDS_Item
+  end
+  inherited DS: TDataSource
+    DataSet = frm_CeramicaOS.CDS
+  end
+  inherited DS_TipoPagto: TDataSource
+    DataSet = frm_CeramicaOS.CDS_TipoPagto
+  end
+  inherited DS_Cliente: TDataSource
+    DataSet = frm_CeramicaOS.CDS_Cliente
+  end
+  inherited DS_TipoPedido: TDataSource
+    DataSet = frm_CeramicaOS.CDS_TipoPedido
+  end
+end

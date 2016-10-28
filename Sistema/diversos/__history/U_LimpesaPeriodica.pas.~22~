@@ -1,0 +1,481 @@
+unit U_LimpesaPeriodica;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls;
+
+type
+  Tfrm_LimpesaPeriodica = class(TForm)
+    gb_periodo: TGroupBox;
+    dt_final: TDateTimePicker;
+    lbl_periodo: TLabel;
+    btn_confirma: TBitBtn;
+    btn_cancela: TBitBtn;
+    rg_tabelas: TGroupBox;
+    chk_OrcVenda: TCheckBox;
+    chk_MovEstLoja: TCheckBox;
+    chk_EntMerc: TCheckBox;
+    chk_SaiMerc: TCheckBox;
+    chk_SaiServ: TCheckBox;
+    chk_PedCompra: TCheckBox;
+    chk_Reducoes: TCheckBox;
+    chk_SerieD: TCheckBox;
+    chk_Frete: TCheckBox;
+    chk_Cupons: TCheckBox;
+    chk_Receber: TCheckBox;
+    chk_Pagar: TCheckBox;
+    chk_CaixaBanco: TCheckBox;
+    chk_todos: TCheckBox;
+    chk_VerificaLog: TCheckBox;
+    chk_EmissaoCheque: TCheckBox;
+    chk_Credito: TCheckBox;
+    pnl_Aguarde: TPanel;
+    procedure btn_cancelaClick(Sender: TObject);
+    procedure chk_todosClick(Sender: TObject);
+    procedure btn_confirmaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+    procedure HabilitaLimpPeriodica(Habilita: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_LimpesaPeriodica: Tfrm_LimpesaPeriodica;
+
+implementation
+
+uses U_DMRet, U_InsLog;
+
+{$R *.dfm}
+
+procedure Tfrm_LimpesaPeriodica.btn_cancelaClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure Tfrm_LimpesaPeriodica.chk_todosClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ComponentCount - 1 do
+  Begin
+    try
+      if (Self.Components[i] is TCheckBox) then
+        TCheckBox(Self.Components[i]).Checked := chk_todos.Checked;
+    except
+    end;
+  end;
+end;
+
+procedure Tfrm_LimpesaPeriodica.btn_confirmaClick(Sender: TObject);
+const
+  SP_LIMPEZA_PERIODICA =
+    ' exec LIMPEZA_PERIODICA :DTFIN, :VENDA, :LANC, :ENTRADA, :SAIDA, :SERV, :PEDIDO, :REDUCOES, '+
+    '   :FRETE, :SERIED, :MESTRE, :RECEBER, :PAGAR, :CAIXA, :LOG, :CHEQUE, :CREDITO ';
+var
+  i: Integer;
+  sTexto: String;
+  LimpTabelas: array[0..15] of Variant;
+begin
+
+  if MessageBox(Handle, 'Deseja Limpar a(s) Tabela(s)?', 'ATENÇÃO',
+    MB_ICONQUESTION + MB_YESNO) = IDYES then
+    if MessageBox(Handle, 'Tem certeza que Deseja Limpar a(s) Tabela(s)?',
+      'ATENÇÃO', MB_ICONQUESTION + MB_YESNO) = IDYES then
+      if MessageBox(Handle,
+        'Limpando a(s) Tabela(s) os Dados Não Poderão Ser Retornados' +
+          #13'Deseja Limpar?', 'ATENÇÃO', MB_ICONQUESTION + MB_YESNO)
+        = IDYES then
+      begin
+        try
+          Update;
+          pnl_Aguarde.Visible := true;
+          Update;
+
+          HabilitaLimpPeriodica(true);
+
+          if chk_todos.Checked then
+            for i := 0 to Self.ComponentCount - 1 do
+            Begin
+              try
+                if (Self.Components[i] is TCheckBox) then
+                  TCheckBox(Self.Components[i]).Checked := chk_todos.Checked;
+              except
+              end;
+            end;
+          {$REGION 'Orçamento de Vendas'}
+                    if chk_OrcVenda.Checked then
+                    begin
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_OrcVenda.Caption +
+                          ' no período menor que ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+
+          {$ENDREGION}
+          {$REGION 'Mov. Estoque'}
+                    if chk_MovEstLoja.Checked then
+                    begin
+                    sTexto := 'Foram excluídos os dados da tabela ' +
+                          chk_MovEstLoja.Caption + ' no período menor que ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+          {$ENDREGION}
+          {$REGION 'Entrada'}
+                    if chk_EntMerc.Checked then
+                    begin
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_EntMerc.Caption +
+                          ' no período de ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+          {$ENDREGION}
+          {$REGION 'Saida'}
+                    if chk_SaiMerc.Checked then
+                    begin
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_SaiMerc.Caption +
+                          ' no período de à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+          {$ENDREGION}
+          {$REGION 'Saida Serviço'}
+                    if chk_SaiServ.Checked then
+                    begin
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_SaiServ.Caption +
+                          ' no período de à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+          {$ENDREGION}
+          {$REGION 'Pedido de Compra'}
+                    if chk_PedCompra.Checked then
+                    begin
+                       sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_PedCompra.Caption +
+                          ' no período de à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                    end;
+          {$ENDREGION}
+          {$REGION 'Reduções'}
+                    if chk_Reducoes.Checked then
+                    begin
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Reducoes.Caption +
+                          ' no período de à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                    end;
+          {$ENDREGION}
+          {$REGION 'lançamento de Frete de Entrada'}
+                    if chk_Frete.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_FRETE, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Frete.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_Frete.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Serie D'}
+                    if chk_SerieD.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_SERIED, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_SerieD.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_SerieD.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Cupons'}
+                    if chk_Cupons.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_CUPOM, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Cupons.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_Cupons.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Contas a receber'}
+                    if chk_Receber.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_RECEBER, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Receber.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_Receber.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Contas a Pagar'}
+                    if chk_Pagar.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_PAGAR, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Pagar.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_Pagar.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Lançamento de Caixa'}
+                    if chk_CaixaBanco.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_CAIXA, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' +
+                          chk_CaixaBanco.Caption + ' no período de ' + DateToStr
+                          (dt_inicial.Date) + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg('Ocorreu um erro ao Limpar a Tabela ' +
+                              chk_CaixaBanco.Caption, mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Verifica Log'}
+                    if chk_VerificaLog.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_LOG, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' +
+                          chk_VerificaLog.Caption + ' no período de ' + DateToStr
+                          (dt_inicial.Date) + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg('Ocorreu um erro ao Limpar a Tabela ' +
+                              chk_VerificaLog.Caption, mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Emissão de Cheques'}
+                    if chk_EmissaoCheque.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_CHEQUE, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' +
+                          chk_EmissaoCheque.Caption + ' no período de ' + DateToStr
+                          (dt_inicial.Date) + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg('Ocorreu um erro ao Limpar a Tabela ' +
+                              chk_EmissaoCheque.Caption, mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+          {$REGION 'Credito'}
+                    if chk_Credito.Checked then
+                      try
+                        DMRet.ExecuteSQL(DEL_CREDITO, [dt_inicial.Date, dt_final.Date]);
+
+                        sTexto :=
+                          'Foram excluídos os dados da tabela ' + chk_Credito.Caption +
+                          ' no período de ' + DateToStr(dt_inicial.Date)
+                          + ' à ' + DateToStr(dt_final.Date);
+                        TInsLog.GeraLog('L', 'LIMPEZA', sTexto);
+                        sleep(500); // Meio segundo de pausa entre uma ação e outra
+                      except
+                        begin
+                          MessageDlg
+                            ('Ocorreu um erro ao Limpar a Tabela ' + chk_Credito.Caption,
+                            mtInformation, [mbOK], 0);
+                          Abort;
+                        end;
+                      end;
+          {$ENDREGION}
+
+          if chk_OrcVenda.Checked then
+            LimpTabelas[0] := 'S'
+          else
+            LimpTabelas[0] := 'N';
+
+          if chk_MovEstLoja.Checked then
+            LimpTabelas[1] := 'S'
+          else
+            LimpTabelas[1] := 'N';
+
+          if chk_EntMerc.Checked then
+            LimpTabelas[2] := 'S'
+          else
+            LimpTabelas[2] := 'N';
+
+          if chk_SaiMerc.Checked then
+            LimpTabelas[3] := 'S'
+          else
+            LimpTabelas[3] := 'N';
+
+          if chk_SaiServ.Checked then
+            LimpTabelas[4] := 'S'
+          else
+            LimpTabelas[4] := 'N';
+
+          if chk_PedCompra.Checked then
+            LimpTabelas[5] := 'S'
+          else
+            LimpTabelas[5] := 'N';
+
+          if chk_Reducoes.Checked then
+            LimpTabelas[6] := 'S'
+          else
+            LimpTabelas[6] := 'N';
+
+          if chk_Frete.Checked then
+            LimpTabelas[7] := 'S'
+          else
+            LimpTabelas[7] := 'N';
+
+          if chk_SerieD.Checked then
+            LimpTabelas[8] := 'S'
+          else
+            LimpTabelas[8] := 'N';
+
+          if chk_Cupons.Checked then
+            LimpTabelas[9] := 'S'
+          else
+            LimpTabelas[9] := 'N';
+
+          if chk_Receber.Checked then
+            LimpTabelas[10] := 'S'
+          else
+            LimpTabelas[10] := 'N';
+
+          if chk_Pagar.Checked then
+            LimpTabelas[11] := 'S'
+          else
+            LimpTabelas[11] := 'N';
+
+          if chk_CaixaBanco.Checked then
+            LimpTabelas[12] := 'S'
+          else
+            LimpTabelas[12] := 'N';
+
+          if chk_VerificaLog.Checked then
+            LimpTabelas[13] := 'S'
+          else
+            LimpTabelas[13] := 'N';
+
+          if chk_EmissaoCheque.Checked then
+            LimpTabelas[14] := 'S'
+          else
+            LimpTabelas[14] := 'N';
+
+          if chk_Credito.Checked then
+            LimpTabelas[15] := 'S'
+          else
+            LimpTabelas[15] := 'N';
+
+          //Executa Procedure para limpeza dos dados
+          DMRet.ExecuteSQL(SP_LIMPEZA_PERIODICA, [dt_final.Date, LimpTabelas[0], LimpTabelas[1],
+           LimpTabelas[2], LimpTabelas[3], LimpTabelas[4], LimpTabelas[5], LimpTabelas[6],
+           LimpTabelas[7], LimpTabelas[8], LimpTabelas[9], LimpTabelas[10], LimpTabelas[11],
+           LimpTabelas[12], LimpTabelas[13], LimpTabelas[14], LimpTabelas[15]]
+           );
+
+          Application.MessageBox('Operação concluida com sucesso!', PChar
+              (Application.Title), MB_ICONINFORMATION + MB_OK);
+        finally
+          HabilitaLimpPeriodica(False);
+
+          Update;
+          pnl_Aguarde.Visible := False;
+          Update;
+        end;
+      end;
+  //
+end;
+
+procedure Tfrm_LimpesaPeriodica.FormCreate(Sender: TObject);
+begin
+  dt_final.Date := Date;
+
+  pnl_Aguarde.Align := alClient;
+end;
+
+procedure Tfrm_LimpesaPeriodica.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_RETURN:
+      Perform(WM_NEXTDLGCTL, 0, 0);
+    VK_ESCAPE:
+      close;
+  end;
+end;
+
+procedure Tfrm_LimpesaPeriodica.HabilitaLimpPeriodica(Habilita: Boolean);
+const
+  SQL_LIMP = 'update params set par_limperiodica = :param';
+begin
+  if Habilita then
+    DMRet.ExecuteSQL(SQL_LIMP, ['S'])
+  else
+    DMRet.ExecuteSQL(SQL_LIMP, ['N']);
+end;
+
+end.

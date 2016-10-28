@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/06/20 09:46:46.000.129,=D:\Projetos\common\trunk\XE7\lancamento\Unit1.pas</Transaction>
+    <Transaction>2016/06/20 10:03:32.000.562,D:\Projetos\common\trunk\XE7\lancamento\U_ObsMotorista.pas=D:\Projetos\common\trunk\XE7\lancamento\Unit1.pas</Transaction>
+    <Transaction>2016/06/20 10:03:32.000.562,D:\Projetos\common\trunk\XE7\lancamento\U_ObsMotorista.dfm=D:\Projetos\common\trunk\XE7\lancamento\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

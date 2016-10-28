@@ -1,0 +1,712 @@
+unit U_PesqProduto;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, U_PesqBase, DB, ADODB, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids,
+  Menus, FMTBcd, DBClient, Provider, SqlExpr;
+
+type
+  TCanvasType = (Default, Entrada);
+
+  TResultProd = record
+    ProId: Integer;
+    ProReferencia: string;
+    PgrId: Variant;
+  end;
+
+  Tfrm_PesqProduto = class(Tfrm_PesqBase)
+    Label1: TLabel;
+    qryParams: TADOQuery;
+    qryParamspar_estabelecimento: TStringField;
+    qryParamsPAR_BLOQ_EST_NEGATIVO: TStringField;
+    qryParamspar_pro_pesquisa: TStringField;
+    qryParamsPAR_ORC_PESQ_CUSTONOTA: TStringField;
+    qryParamsPAR_PRODUTO_CODFABRIC: TStringField;
+    qryParamsPAR_ORC_DTALTPRECO: TStringField;
+    qryParamsPAR_ORC_PESQ_GAVETA: TStringField;
+    qryParamsPAR_ORC_PESQ_VLRATACADO: TStringField;
+    qryParamsPAR_ORC_PESQ_VLRPREPOS: TStringField;
+    qryParamsPAR_ORC_PESQ_VLRVISTA: TStringField;
+    qryParamsPAR_ORC_PRO_PROMOCAO: TStringField;
+    qryParamsPAR_ORC_PESQ_VLRMINIMO: TStringField;
+    qryParamsPAR_ORC_PESQ_VLRPRAZO: TStringField;
+    qryParamsPAR_CONSPRODUTO: TStringField;
+    qryParamsPAR_ORC_PESQ_RED_DESC: TStringField;
+    qryParamsPAR_ORC_PESQ_TAM_DESC: TIntegerField;
+    qryParamsPAR_ORC_TIPO_ATIVO: TStringField;
+    qryParamsPAR_ORC_TIPO_INATIVO: TStringField;
+    qryParamsPAR_ORC_TIPO_BENSCONS: TStringField;
+    qryParamsPAR_MULTIEMP: TStringField;
+    PopupMenu1: TPopupMenu;
+    ConsultaProduto1: TMenuItem;
+    CodigoFabricante1: TMenuItem;
+    ObservaodeProduto1: TMenuItem;
+    qryParamsPAR_ORC_CONSAUTOMATICA: TStringField;
+    CDSPRO_ID: TIntegerField;
+    CDSPRO_EAN1: TStringField;
+    CDSPRO_EAN2: TStringField;
+    CDSPRO_EAN3: TStringField;
+    CDSPRO_REFERENCIA: TStringField;
+    CDSCST_ID: TStringField;
+    CDSNAF_CODFISCAL: TStringField;
+    CDSDEP_ID: TIntegerField;
+    CDSPRO_UNIDADE: TStringField;
+    CDSPRO_ESTOQUE: TFMTBCDField;
+    CDSPRO_ESTOQMIN: TFMTBCDField;
+    CDSPRO_VLRCUSTO: TFMTBCDField;
+    CDSPRO_VLRPREPOS: TFMTBCDField;
+    CDSPRO_VLRMEDIO: TFMTBCDField;
+    CDSPRO_VLRPRAZO: TFMTBCDField;
+    CDSPRO_DTALTPRECO: TSQLTimeStampField;
+    CDSPRO_DESCRICAO: TStringField;
+    CDSPRO_MARGEM: TFMTBCDField;
+    CDSPRO_COMISSAO: TFMTBCDField;
+    CDSPRO_VLRVENDA: TFMTBCDField;
+    CDSPRO_BALANCA: TStringField;
+    CDSPRO_CODBALANCA: TStringField;
+    CDSPRO_ATIVO: TStringField;
+    CDSPRO_CUSTONOTA: TFMTBCDField;
+    CDSPRO_VLRATACADO: TFMTBCDField;
+    CDSPRO_MARGEMPRAZO: TFMTBCDField;
+    CDSPRO_GAVETA: TStringField;
+    CDSFOR_ID: TIntegerField;
+    CDSPRO_CODFAB1: TStringField;
+    CDSPRO_PROMOCAO_VLR: TFMTBCDField;
+    CDSPRO_VLRMINIMO: TFMTBCDField;
+    CDSPRO_RESUMIDO: TStringField;
+    CDSLAB_ID: TIntegerField;
+    CDSLAB_DESCRICAO: TStringField;
+    CDSPRO_REGISTRO_MS: TStringField;
+    qryParamsPAR_ORC_NATFISCAL: TStringField;
+    CDSIPPT: TStringField;
+    CDSIAT: TStringField;
+    qryParamsPAR_ORC_IAT_IPPT: TStringField;
+    qryParamsPAR_PRO_GRADE: TStringField;
+    CDSGRA_DESCRICAO: TStringField;
+    CDSCOR_DESCRICAO: TStringField;
+    CDSPGR_ID: TIntegerField;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure edt_pesqChange(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btn_confirmaClick(Sender: TObject);
+    procedure ObservaodeProduto1Click(Sender: TObject);
+    procedure ConsultaProduto1Click(Sender: TObject);
+    procedure CodigoFabricante1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    ModuloMultiEmpresa: HMODULE;
+
+    Cod, qtde_colunas : Integer;
+    Ref, RegMS, TiposProd : String;
+
+    farmacia, custo_real, CodFabricante, DtAltPreco, ConsAutom,
+    Gaveta, Atacado, Reposicao, Vista, Prazo : Boolean;
+
+    ResultProd: TResultProd;
+
+    class var BensConsumoEnabled: Boolean;
+
+    function GetFunction(const Module: HMODULE; const FuncName: PAnsiChar): Pointer;
+    function GetSql(DescricaoResumida: Boolean = False): string;
+    procedure ShowEstoques;
+    procedure ValidateCanvasType(ACanvasType: TCanvasType);
+  public
+    { Public declarations }
+    class function GetCodResult(ACanvasType: TCanvasType = Default; HabilitaBensConsumo: Boolean = False): Integer;
+    class function GetRefResult(ACanvasType: TCanvasType = Default; HabilitaBensConsumo: Boolean = False): String;
+    class function GetRegistroMSResult(ACanvasType: TCanvasType = Default; HabilitaBensConsumo: Boolean = False): String;
+    class function GetResult(ACanvasType: TCanvasType = Default; HabilitaBensConsumo: Boolean = False): TResultProd;
+  end;
+
+var
+  frm_PesqProduto: Tfrm_PesqProduto;
+
+implementation
+
+uses U_ObservacaoProduto, U_CodFabricantePadrao;
+
+{$R *.dfm}
+
+procedure Tfrm_PesqProduto.btn_confirmaClick(Sender: TObject);
+var
+  search, where: string;
+begin
+  inherited;
+  search := Trim(edt_pesq.Text);
+
+  CDS.Close;
+  CDS.CommandText := '';
+
+  case rgTipoBusca.ItemIndex of
+    0: Begin  //Descrição
+          CDS.CommandText:= GetSql + ' where (descricao like :descricao) and (ATIVO in ('+TiposProd+')) order by DESCRICAO ';
+          //
+          if (qryParamspar_pro_pesquisa.Value = 'S') then
+             SearchByParams([search + '%'])
+          else
+             SearchByParams(['%' + search + '%']);
+       End;
+    1: Begin //Descrição Resumida
+          CDS.CommandText:= GetSql(True) + ' where (DESC_RESUMIDA like :resumido) and (ATIVO in ('+TiposProd+')) order by DESC_RESUMIDA ';
+
+          if (qryParamspar_pro_pesquisa.Value = 'S') then
+             SearchByParams([search + '%'])
+          else
+             SearchByParams(['%' + search + '%']);
+       End;
+    2: Begin   //EAN
+          CDS.CommandText:= GetSql + ' where (EAN1 like :codbarra) and (ATIVO in ('+TiposProd+')) order by DESCRICAO ';
+          SearchByParams([search + '%']);
+       End;
+    3: Begin //Referencia
+          CDS.CommandText:= GetSql + ' where (REFERENCIA like :referencia) and (ATIVO in ('+TiposProd+')) order by REFERENCIA ';
+          SearchByParams([search + '%']);
+       End;
+    4: Begin //código NCM
+          CDS.CommandText:= GetSql + ' where NCM_CODIGO = :cod order by DESCRICAO';
+          SearchByParams([search]);
+       End;
+    5: Begin //Cod. Balança
+           if (qryParamspar_estabelecimento.Value = 'S') then
+           begin
+               CDS.CommandText:= GetSql + ' where codbalanca like :codbalanca and (balanca = ''S'') and (ATIVO in ('+TiposProd+')) order by convert(int,codbalanca)';
+               SearchByParams([search+ '%']);
+           end
+           else
+           begin
+              CDS.CommandText:= GetSql + ' where (CODFAB1 = :CODFAB1) OR (CODFAB2 = :CODFAB2) OR (CODFAB3 = :CODFAB3) OR  (CODFAB4 = :CODFAB4) '+
+                                         ' OR (CODFAB5 = :CODFAB5) OR (CODFAB6 = :CODFAB6) OR (CODFAB7 = :CODFAB7) OR (CODFAB8 = :CODFAB8) '+
+                                         ' OR (CODFAB9 = :CODFAB9) OR (CODFAB10 = :CODFAB10) and (ATIVO in ('+TiposProd+')) ';
+              SearchByParams([search,search,search,search,search,search,search,search,search,search]);
+           end;
+       End;
+    6: Begin //Codigo do fabricante
+          CDS.CommandText:= GetSql + ' where (CODFAB1 = :CODFAB1) OR (CODFAB2 = :CODFAB2) OR (CODFAB3 = :CODFAB3) OR (CODFAB4 = :CODFAB4) '+
+                                     ' OR (CODFAB5 = :CODFAB5) OR (CODFAB6 = :CODFAB6) OR (CODFAB7 = :CODFAB7) OR (CODFAB8 = :CODFAB8) '+
+                                     ' OR (CODFAB9 = :CODFAB9) OR (CODFAB10 = :CODFAB10) and (ATIVO in ('+TiposProd+')) ';
+          SearchByParams([search,search,search,search,search,search,search,search,search,search]);
+       End;
+  end;
+end;
+
+procedure Tfrm_PesqProduto.CodigoFabricante1Click(Sender: TObject);
+begin
+  inherited;
+  if not CDS.IsEmpty then
+      Tfrm_CodFabricantePadrao.SetID(CDSPRO_ID.Value);
+end;
+
+procedure Tfrm_PesqProduto.ConsultaProduto1Click(Sender: TObject);
+begin
+  inherited;
+  edt_pesq.SetFocus;
+end;
+
+procedure Tfrm_PesqProduto.edt_pesqChange(Sender: TObject);
+begin
+  inherited;
+  if ConsAutom then
+  Begin
+     if edt_pesq.Text <> '' then
+     begin
+          CDS.Close;
+          CDS.CommandText := GetSql;
+          CDS.Open;
+
+          case rgTipoBusca.ItemIndex of
+             0:Begin
+                 CDS.Filter        := 'PRO_DESCRICAO LIKE '+QuotedStr(edt_pesq.Text+'%');
+                 CDS.Filtered      := True;
+               end;
+             1:Begin
+                 CDS.Filter        := 'PRO_RESUMIDO LIKE '+QuotedStr(edt_pesq.Text+'%');
+                 CDS.Filtered      := True;
+               end;
+             2:Begin
+                 CDS.Filter        := 'PRO_EAN1 LIKE '+QuotedStr(edt_pesq.Text+'%');
+                 CDS.Filtered      := True;
+               end;
+             3:Begin
+                 CDS.Filter        := 'PRO_REFERENCIA LIKE '+QuotedStr(edt_pesq.Text+'%');
+                 CDS.Filtered      := True;
+               end;
+
+             4:Begin
+                    //Não ativar este recurso para o Codigo NCM pois, acarreta em erro grave de pesquisa no sistema - Rodrigo 20/01/2011
+                     CDS.Filtered := False;
+               end;
+
+             5:Begin
+                     if (qryParamspar_estabelecimento.Value = 'S') then
+                     Begin
+                         CDS.Filter        := 'PRO_CODBALANCA LIKE '+QuotedStr(edt_pesq.Text+'%');
+                         CDS.Filtered      := True;
+                     end
+                     else
+                         CDS.Filtered := False;
+               end;
+             6:Begin
+                    //Não ativar este recurso para o Codigo do fabricante pois, acarreta em erro grave de pesquisa no sistema - Rodrigo 20/01/2011
+                         CDS.Filtered := False;
+               end;
+           end;
+     end;
+end;
+end;
+
+procedure Tfrm_PesqProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if ModalResult = mrOk then
+  begin
+    Cod   := CDSPRO_ID.Value;
+    Ref   := CDSPRO_REFERENCIA.AsString;
+    RegMS := CDSPRO_REGISTRO_MS.AsString;
+
+    ResultProd.ProId         := CDSPRO_ID.Value;
+    ResultProd.ProReferencia := CDSPRO_REFERENCIA.Value;
+    ResultProd.PgrId         := CDSPGR_ID.AsVariant;
+  end;
+  //
+  inherited;
+
+  if ModuloMultiEmpresa <> 0 then
+  begin
+      UnRegisterModuleClasses(ModuloMultiEmpresa);
+      UnloadPackage(ModuloMultiEmpresa);
+  end;
+end;
+
+procedure Tfrm_PesqProduto.FormCreate(Sender: TObject);
+begin
+  inherited;
+  qtde_colunas   := 3;
+
+
+  qryparams.Open;
+  farmacia      := qryParamspar_estabelecimento.Value    = 'F';
+  custo_real    := qryParamsPAR_ORC_PESQ_CUSTONOTA.Value = 'S';
+  CodFabricante := qryParamsPAR_PRODUTO_CODFABRIC.Value  = 'S';
+  DtAltPreco    := qryParamsPAR_ORC_DTALTPRECO.Value     = 'S';
+  ConsAutom     := qryParamsPAR_ORC_CONSAUTOMATICA.Value = 'S';
+  Gaveta        := qryParamsPAR_ORC_PESQ_GAVETA.Value    = 'S';
+  Atacado       := qryParamsPAR_ORC_PESQ_VLRATACADO.Value= 'S';
+  Reposicao     := qryParamsPAR_ORC_PESQ_VLRPREPOS.Value = 'S';
+  Vista         := qryParamsPAR_ORC_PESQ_VLRVISTA.Value  = 'S';
+  Prazo         := qryParamsPAR_ORC_PESQ_VLRPRAZO.Value  = 'S';
+
+    //Trabalha com grade
+  if qryParamsPAR_PRO_GRADE.Value = 'S' then
+  begin
+    Grid.Columns[2].Visible := True;
+    Grid.Columns[2].Width   := 120;
+    Grid.Columns[3].Visible := True;
+    Grid.Columns[3].Width   := 120;
+    qtde_colunas := qtde_colunas + 2;
+  end
+  else
+  begin
+    Grid.Columns[2].Visible := False;
+    Grid.Columns[3].Visible := False;
+  end;
+
+  //Farmacia
+  if farmacia then
+  begin
+     Grid.Columns[4].Visible := true;
+     Grid.Columns[4].Width   := 140;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[4].Visible := false;
+
+
+  //Campo UNIDADE
+  Grid.Columns[5].Visible := true;
+
+  if CodFabricante then
+  begin
+     Grid.Columns[6].Visible := true;
+     Grid.Columns[6].Width   := 105;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[6].Visible := false;
+
+
+  if Vista then
+  Begin
+     Grid.Columns[8].Visible := true;
+     Grid.Columns[8].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[8].Visible := false;
+
+  if Prazo then
+  Begin
+     Grid.Columns[9].Visible := true;
+     Grid.Columns[9].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[9].Visible := false;
+
+  if Atacado then
+  begin
+      Grid.Columns[10].Visible := True;
+      Grid.Columns[10].Width   := 75;
+      qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[10].Visible := false;
+
+  if Gaveta then
+  Begin
+     Grid.Columns[11].Visible := true;
+     Grid.Columns[11].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[11].Visible := false;
+
+  if custo_real then
+  Begin
+     Grid.Columns[12].Visible   := True;
+     Grid.Columns[12].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[12].Visible   := False;
+
+  if Reposicao then
+  begin
+      Grid.Columns[13].Visible:= true;
+      Grid.Columns[13].Width   := 75;
+      qtde_colunas := qtde_colunas + 1;
+  end;
+
+  if DtAltPreco then
+  Begin
+     Grid.Columns[14].Visible := True ;
+     Grid.Columns[14].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[14].Visible := False;
+
+
+  if qryParamsPAR_ORC_PRO_PROMOCAO.Value = 'S' then
+  Begin
+     Grid.Columns[15].Visible := True;
+     Grid.Columns[15].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[15].Visible := false;
+
+  if qryParamsPAR_ORC_PESQ_VLRMINIMO.Value = 'S' then
+  Begin
+     Grid.Columns[16].Visible := True;
+     Grid.Columns[16].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[16].Visible := false;
+
+
+  if qryParamsPAR_ORC_NATFISCAL.Value = 'S' then
+  Begin
+     Grid.Columns[17].Visible := True;
+     Grid.Columns[17].Width   := 75;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+     Grid.Columns[17].Visible := false;
+
+  //Informações necessarias para Homologação
+  if qryParamsPAR_ORC_IAT_IPPT.Value = 'S' then
+  Begin
+     Grid.Columns[18].Visible := True;
+     Grid.Columns[18].Width   := 35;
+     Grid.Columns[19].Visible := True;
+     Grid.Columns[19].Width   := 35;
+     qtde_colunas := qtde_colunas + 1;
+  end
+  else
+  Begin
+     Grid.Columns[18].Visible := false;
+     Grid.Columns[19].Visible := false;
+  End;
+
+    //Determina o Tamanho do Campo Descrição Conforme o numero de colunas visiveis.
+    if not(qryParams.Active) then
+         qryParams.Open;
+
+    //validando se o sistema vai controlar o tamanho do campo descrição automaticamente
+    if (qryParamsPAR_ORC_PESQ_RED_DESC.Value = 'A') then
+    Begin
+        if not(farmacia) then
+        Begin
+            if qtde_colunas <= 3 then
+              Grid.Columns[1].Width   := 540
+            else if qtde_colunas = 4 then
+              Grid.Columns[1].Width   := 465
+            else if (qtde_colunas = 5) then
+              Grid.Columns[1].Width   := 389
+            else if qtde_colunas = 6 then
+              Grid.Columns[1].Width   := 313
+            else if qtde_colunas >= 7 then
+              Grid.Columns[1].Width   := 240;
+        end
+        else  //Se for farmacia habilita o campo laboratorio
+        begin
+            if qtde_colunas <= 4 then
+              Grid.Columns[1].Width   := 330
+            else if qtde_colunas = 5 then
+              Grid.Columns[1].Width   := 265
+            else if (qtde_colunas >= 6) then
+              Grid.Columns[1].Width   := 200;
+        end;
+    end
+    else
+       Grid.Columns[1].Width   := qryParamsPAR_ORC_PESQ_TAM_DESC.Value;// controlado manualmente
+
+    //Verficando se a consulta vai pegar os produtos: Ativos, Inativos e Bens de Consumo
+    TiposProd := '';
+    //Produtos Ativos
+    if qryParamsPAR_ORC_TIPO_ATIVO.Value = 'S' then
+      TiposProd := '''A''';
+    //Produtos Inativos
+    if qryParamsPAR_ORC_TIPO_INATIVO.Value = 'S' then
+      if TiposProd = '' then
+        TiposProd := '''I'''
+      else
+        TiposProd := TiposProd + ', ''I''';
+    //Produtos Bens de Consumo
+    if BensConsumoEnabled or (qryParamsPAR_ORC_TIPO_BENSCONS.Value = 'S') then
+      if TiposProd = '' then
+        TiposProd := '''B'''
+      else
+        TiposProd := TiposProd + ', ''B''';
+
+  if qryParamsPAR_MULTIEMP.Value <> 'N' then
+    ModuloMultiEmpresa := LoadPackage('MultiEmpresa.bpl');
+  //
+end;
+
+procedure Tfrm_PesqProduto.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_ESCAPE then
+  begin
+     Close;
+     Exit;
+  end;
+
+  if (Key = VK_F8) and (ModuloMultiEmpresa <> 0) then ShowEstoques;
+end;
+
+procedure Tfrm_PesqProduto.FormShow(Sender: TObject);
+var
+  Tipo : Integer;
+begin
+  inherited;
+
+    qryParams.open;
+    rgTipoBusca.Items.Clear;
+    rgTipoBusca.Items.Add('&Descrição ');
+    rgTipoBusca.Items.Add('De&sc. Resumida');
+    rgTipoBusca.Items.Add('&EAN ');
+    rgTipoBusca.Items.Add('&Referência ');
+    rgTipoBusca.Items.Add('Código &NCM ');
+
+    if (qryParamspar_estabelecimento.Value = 'S') then
+        rgTipoBusca.Items.Add('Cod. &Balança ');
+
+    if (qryParamspar_produto_codfabric.Value = 'S') then
+        rgTipoBusca.Items.Add('Cod. &Fabricante ');
+
+       Tipo := 0;
+       if qryParamsPAR_CONSPRODUTO.Value = 'D' then  //Descrição Normal
+          Tipo  := 0
+       else if qryParamsPAR_CONSPRODUTO.Value = 'S' then //Descrição Resumida
+          Tipo  := 1
+       else if qryParamsPAR_CONSPRODUTO.Value = 'E' then //EAN
+          Tipo  := 2
+       else if qryParamsPAR_CONSPRODUTO.Value = 'R' then //Referencia
+          Tipo  := 3
+       else if qryParamsPAR_CONSPRODUTO.Value = 'N' then //Código NCM
+          Tipo  := 4
+       else if qryParamsPAR_CONSPRODUTO.Value = 'C' then //Código de Balança
+          Tipo  := 5
+       else if qryParamsPAR_CONSPRODUTO.Value = 'F' then //Código do fabricante
+          Tipo  := 6;
+
+    //Se no parametros tiver marcado para padrão cod Balanca porem cod balança tiver invisivel ele marca padrão Descrição
+    if (qryParamspar_consproduto.Value = 'C') and not(qryParamspar_estabelecimento.Value = 'S') then
+          Tipo := 0;
+
+    //Se no parametros tiver marcado para padrão cod Fabricante porem cod Fabricante tiver invisivel ele marca padrão Descrição
+    if (qryParamspar_consproduto.Value = 'F') and not(qryParamspar_produto_codfabric.Value = 'S') then
+          Tipo := 0;
+
+    rgTipoBusca.ItemIndex := Tipo;
+    ResultProd.PgrId      := Null;
+end;
+
+function Tfrm_PesqProduto.GetFunction(const Module: HMODULE;
+  const FuncName: PAnsiChar): Pointer;
+begin
+  Result := GetProcAddress(Module, FuncName);
+
+  if not Assigned(Result) then
+    raise Exception.Create('A função remota ("' + FuncName + '") não foi encontrada.');
+  //
+end;
+
+class function Tfrm_PesqProduto.GetCodResult(ACanvasType: TCanvasType = Default;
+  HabilitaBensConsumo: Boolean = False): Integer;
+begin
+  BensConsumoEnabled := HabilitaBensConsumo;
+
+  with Tfrm_PesqProduto.Create(nil) do
+  try
+    ValidateCanvasType(ACanvasType);
+    //
+    ShowModal;
+    Result := Cod;
+  finally
+    Free;
+  end;
+end;
+
+class function Tfrm_PesqProduto.GetRefResult(ACanvasType: TCanvasType = Default;
+  HabilitaBensConsumo: Boolean = False): String;
+begin
+  BensConsumoEnabled := HabilitaBensConsumo;
+
+  with Tfrm_PesqProduto.Create(nil) do
+  try
+    ValidateCanvasType(ACanvasType);
+    //
+    ShowModal;
+    Result := Ref;
+  finally
+    Free;
+  end;
+end;
+
+class function Tfrm_PesqProduto.GetRegistroMSResult(ACanvasType: TCanvasType = Default;
+  HabilitaBensConsumo: Boolean = False): String;
+begin
+  BensConsumoEnabled := HabilitaBensConsumo;
+
+  with Tfrm_PesqProduto.Create(nil) do
+  try
+    ValidateCanvasType(ACanvasType);
+    //
+    ShowModal;
+    Result := RegMS;
+  finally
+    Free;
+  end;
+end;
+
+class function Tfrm_PesqProduto.GetResult(ACanvasType: TCanvasType;
+  HabilitaBensConsumo: Boolean): TResultProd;
+begin
+  BensConsumoEnabled := HabilitaBensConsumo;
+
+  with Tfrm_PesqProduto.Create(nil) do
+  try
+    ValidateCanvasType(ACanvasType);
+    //
+    ShowModal;
+    Result := ResultProd;
+  finally
+    Free;
+  end;
+end;
+
+function Tfrm_PesqProduto.GetSql(DescricaoResumida: Boolean = False): string;
+const
+  SQL =
+    ' SELECT ' +
+    '    V.ID AS PRO_ID, EAN1 AS PRO_EAN1, EAN2 AS PRO_EAN2, EAN3 AS PRO_EAN3, ' +
+    '    REFERENCIA AS PRO_REFERENCIA, CST AS CST_ID, NAF_CODFISCAL, V.DEP_ID, ' +
+    '    UN AS PRO_UNIDADE, ESTOQUE AS PRO_ESTOQUE, cast(0 as numeric(9,3)) AS PRO_ESTOQMIN, ' +
+    '    VLR_CUSTO AS PRO_VLRCUSTO, VLR_PREPOS AS PRO_VLRPREPOS, ' +
+    '    VLR_MEDIO AS PRO_VLRMEDIO, VLR_PRAZO AS PRO_VLRPRAZO, %0:s, ' +
+    '    MARGEM_VENDA AS PRO_MARGEM, COMISSAO AS PRO_COMISSAO, VLR_VENDA AS PRO_VLRVENDA, ' +
+    '    BALANCA AS PRO_BALANCA, CODBALANCA AS PRO_CODBALANCA, VLR_CUSTO_REAL AS PRO_CUSTONOTA, ' +
+    '    VLR_ATACADO AS PRO_VLRATACADO, MARGEM_PRAZO AS PRO_MARGEMPRAZO, GAVETA AS PRO_GAVETA, ' +
+    '    V.FOR_ID, CODFAB1 AS PRO_CODFAB1, VLR_PROMOCAO AS PRO_PROMOCAO_VLR, ' +
+    '    VLR_MINIMO AS PRO_VLRMINIMO, V.LAB_ID, LAB_DESCRICAO, REGISTRO_MS AS PRO_REGISTRO_MS, ' +
+    '    V.IPPT, cast(''T'' as varchar(1)) as IAT, %1:s GRA_DESCRICAO, %1:s COR_DESCRICAO, ' +
+    '    PGR_ID, DT_ALTPRECO AS PRO_DTALTPRECO, DESC_RESUMIDA AS PRO_RESUMIDO, ' +
+    '    ATIVO AS PRO_ATIVO ' +
+    ' FROM ' +
+    '    %2:s V ' +
+    ' LEFT JOIN ' +
+    '    LABORATORIO L ON V.LAB_ID = L.LAB_ID ' +
+    ' %3:s ';
+
+  INNER_JOIN_GRADE =
+    ' INNER JOIN' +
+    '   GRADES G ON V.GRA_ID = G.GRA_ID' +
+    ' INNER JOIN' +
+    '   CORES C ON V.COR_ID = C.COR_ID ';
+var
+  TipoDescricao: string;
+begin
+  if DescricaoResumida then
+    TipoDescricao := 'DESC_RESUMIDA AS PRO_DESCRICAO'
+  else
+    TipoDescricao := 'DESCRICAO AS PRO_DESCRICAO';
+
+  if qryParamsPAR_PRO_GRADE.Value = 'S' then
+    Result := Format(SQL, [
+      TipoDescricao, '', 'VW_ITEM_GRADE', INNER_JOIN_GRADE
+    ])
+  else
+    Result := Format(SQL, [
+      TipoDescricao, 'cast('''' as varchar(45)) AS', 'VW_ITEM', ''
+    ]);
+end;
+
+procedure Tfrm_PesqProduto.ObservaodeProduto1Click(Sender: TObject);
+begin
+  inherited;
+    if not CDS.IsEmpty then
+      Tfrm_ObservacaoProduto.SetID(CDSPRO_ID.Value);
+end;
+
+procedure Tfrm_PesqProduto.ShowEstoques;
+var
+  NewPesqEstoques: function(ProId: integer): TForm;
+  Frm: TForm;
+begin
+  if CDS.IsEmpty then Exit;
+
+  @NewPesqEstoques := GetFunction(ModuloMultiEmpresa, 'NewPesqEstoques');
+
+  Frm := NewPesqEstoques(CDSPRO_ID.Value);
+  try
+    Frm.ShowModal;
+  finally
+    Frm.Free;
+  end;
+end;
+
+procedure Tfrm_PesqProduto.ValidateCanvasType(ACanvasType: TCanvasType);
+begin
+  if ACanvasType = Entrada then
+    TiposProd := '''A'', ''B''';
+end;
+
+end.

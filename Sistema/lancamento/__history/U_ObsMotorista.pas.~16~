@@ -1,0 +1,83 @@
+unit U_ObsMotorista;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  Tfrm_ObsMotorista = class(TForm)
+    lblMotorista: TLabel;
+    edtMotorista: TEdit;
+    mmObservacao: TMemo;
+    lblObervacao: TLabel;
+    btnConfirmar: TBitBtn;
+    btnCancelar: TBitBtn;
+    procedure edtMotoristaKeyPress(Sender: TObject; var Key: Char);
+    procedure mmObservacaoKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+    procedure btnCancelarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+  class procedure ShowForm;
+  end;
+
+var
+  frm_ObsMotorista: Tfrm_ObsMotorista;
+
+implementation
+
+{$R *.dfm}
+
+{ Tfrm_ObsMotorista }
+
+procedure Tfrm_ObsMotorista.btnCancelarClick(Sender: TObject);
+begin
+  if MessageBox(Handle, 'Deseja Cancelar ?', 'ATENÇÃO', MB_ICONQUESTION + MB_YESNO)
+   = IDYES then Close;
+
+end;
+
+procedure Tfrm_ObsMotorista.edtMotoristaKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if Key = #13 then mmObservacao.SetFocus;
+
+  Key := AnsiUpperCase(key)[1];
+end;
+
+procedure Tfrm_ObsMotorista.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #27 Then
+   Close;
+end;
+
+procedure Tfrm_ObsMotorista.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+begin
+  if Msg.CharCode = VK_ESCAPE then
+   Close;
+end;
+
+procedure Tfrm_ObsMotorista.mmObservacaoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if Key = #13 then btnConfirmar.SetFocus;
+
+  Key := AnsiUpperCase(key)[1];
+end;
+
+class procedure Tfrm_ObsMotorista.ShowForm;
+begin
+  with Tfrm_ObsMotorista.Create(nil) do
+  try
+    ShowModal;
+
+  finally
+    Free;
+  end;
+end;
+
+end.

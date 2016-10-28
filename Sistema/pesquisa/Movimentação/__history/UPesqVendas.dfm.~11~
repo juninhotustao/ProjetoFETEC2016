@@ -1,0 +1,120 @@
+inherited FrmPesqVendas: TFrmPesqVendas
+  Caption = 'Pesquisa de Vendas'
+  ClientWidth = 584
+  ExplicitWidth = 590
+  ExplicitHeight = 443
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel4: TPanel
+    Width = 584
+    inherited Grid: TDBGrid
+      Width = 584
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'VEN_ID'
+          Title.Caption = 'N'#186' Venda'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'VEN_TOTAL'
+          Title.Caption = 'Valor Total'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'VEN_OBSERVACAO'
+          Title.Caption = 'Observa'#231#227'o'
+          Width = 375
+          Visible = True
+        end>
+    end
+    inherited Panel2: TPanel
+      Width = 584
+      inherited lblBusca: TLabel
+        Left = 37
+        Top = 33
+        Width = 64
+        Caption = 'N'#186' Venda:'
+        ExplicitLeft = 37
+        ExplicitTop = 33
+        ExplicitWidth = 64
+      end
+      inherited rgTipoBusca: TRadioGroup [1]
+        Top = 9
+        Width = 263
+        Height = 59
+        Enabled = False
+        Visible = True
+        ExplicitTop = 9
+        ExplicitWidth = 263
+        ExplicitHeight = 59
+      end
+      inherited edt_pesq: TEdit [2]
+        Left = 108
+        Top = 26
+        Width = 142
+        Height = 27
+        ExplicitLeft = 108
+        ExplicitTop = 26
+        ExplicitWidth = 142
+        ExplicitHeight = 27
+      end
+      inherited btn_confirma: TBitBtn
+        Left = 431
+        Top = 19
+        Height = 43
+        ExplicitLeft = 431
+        ExplicitTop = 19
+        ExplicitHeight = 43
+      end
+      object chkNumVendas: TCheckBox
+        Left = 284
+        Top = 32
+        Width = 97
+        Height = 17
+        Caption = 'Todos'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+      end
+    end
+  end
+  inherited QRY: TSQLQuery
+    Params = <
+      item
+        DataType = ftString
+        Name = 'VEN_ID'
+        ParamType = ptInput
+      end>
+  end
+  inherited CDS: TClientDataSet
+    CommandText = 
+      'SELECT VEN_ID, VEN_TOTAL, VEN_OBSERVACAO FROM VENDA WHERE CONVER' +
+      'T(VARCHAR(20), VEN_ID) LIKE :VEN_ID'
+    Params = <
+      item
+        DataType = ftString
+        Name = 'VEN_ID'
+        ParamType = ptInput
+      end>
+    object CDSVEN_ID: TIntegerField
+      FieldName = 'VEN_ID'
+    end
+    object CDSVEN_TOTAL: TFMTBCDField
+      FieldName = 'VEN_TOTAL'
+      Precision = 12
+      Size = 2
+    end
+    object CDSVEN_OBSERVACAO: TStringField
+      FieldName = 'VEN_OBSERVACAO'
+      Size = 70
+    end
+  end
+end

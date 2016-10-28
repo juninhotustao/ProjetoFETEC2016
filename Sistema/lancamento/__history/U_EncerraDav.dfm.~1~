@@ -1,0 +1,50 @@
+inherited frm_EncerraDav: Tfrm_EncerraDav
+  BorderIcons = []
+  Caption = 'Encerra DAV - Documento Auxiliar de Venda'
+  ExplicitWidth = 427
+  ExplicitHeight = 303
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited btn_Encerra: TBitBtn
+      Caption = '&Encerra DAV'
+    end
+  end
+  inherited Panel3: TPanel
+    inherited lbl_SubTotal: TDBText
+      DataField = 'TOTAL'
+    end
+    inherited DBText2: TDBText
+      DataField = 'TOTAL_DAV'
+    end
+    inherited edt_Desconto: TDBEdit
+      DataField = 'DAV_DESCONTO'
+    end
+  end
+  inherited DS_Item: TDataSource
+    DataSet = frm_Dav.CDS_Item
+  end
+  inherited DS: TDataSource
+    DataSet = frm_Dav.CDS
+  end
+  object DS_Cliente: TDataSource
+    DataSet = frm_Dav.CDS_Cliente
+    Left = 108
+    Top = 50
+  end
+  object DS_Vendedor: TDataSource
+    DataSet = frm_Dav.CDS_Vendedor
+    Left = 172
+    Top = 50
+  end
+  object DS_TipoPagto: TDataSource
+    DataSet = frm_Dav.CDS_TipoPagto
+    Left = 240
+    Top = 50
+  end
+  object Ds_Otica: TDataSource
+    DataSet = frm_Dav.CDS_Otica
+    Left = 300
+    Top = 50
+  end
+end

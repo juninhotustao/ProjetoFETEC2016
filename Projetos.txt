@@ -1,0 +1,6 @@
+Cadastro de produto(Faltando o pesquisar) 
+
+- relatorio
+- atualização do estoque
+
+- tela de venda

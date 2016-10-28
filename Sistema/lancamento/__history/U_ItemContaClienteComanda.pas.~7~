@@ -1,0 +1,162 @@
+unit U_ItemContaClienteComanda;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, U_LancItemBase, Data.DB, Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls;
+
+type
+  Tfrm_ItemContaClienteComanda = class(Tfrm_LancItemBase)
+    Panel3: TPanel;
+    Label1: TLabel;
+    DBText1: TDBText;
+    Panel4: TPanel;
+    Label8: TLabel;
+    btn_ConsProd: TSpeedButton;
+    Label7: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label6: TLabel;
+    edt_Codigo: TEdit;
+    edt_Descricao: TDBEdit;
+    edt_Qtde: TDBEdit;
+    edt_VlrUnit: TDBEdit;
+    edt_VlrTotal: TDBEdit;
+    procedure btn_ConfirmaClick(Sender: TObject);
+    procedure edt_CodigoExit(Sender: TObject);
+    procedure btn_ConsProdClick(Sender: TObject);
+    procedure edt_QtdeExit(Sender: TObject);
+  private
+    function TrabalhaComBalanca:Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_ItemContaClienteComanda: Tfrm_ItemContaClienteComanda;
+
+implementation
+
+uses
+  DBClient, U_DMRet, U_LancContaCliente, U_PesqProduto, U_BalancaFactory;
+
+{$R *.dfm}
+
+procedure Tfrm_ItemContaClienteComanda.btn_ConfirmaClick(Sender: TObject);
+const
+  InsertImpressao =
+    ' INSERT INTO FILA_IMPRESSAO (FIL_DATA, FIL_TABELA, FIL_ITEMS, FIL_IMPRESSO) '+
+	  ' VALUES (:DATA, :FILTABELA, :FIL_ITEMS, :FIL_IMPRESSO) ';
+begin
+  DMRet.ExecuteSQL(InsertImpressao, [
+    DS.DataSet.FieldByName('CON_DT_ABERT').AsDateTime,
+      'ITEM_CONTA_CLIENTE', DS_Item.DataSet.FieldByName('ICC_ID').AsInteger, 'N'
+  ]);
+
+  inherited;
+end;
+
+procedure Tfrm_ItemContaClienteComanda.btn_ConsProdClick(Sender: TObject);
+var
+  Referencia : Variant;
+begin
+  inherited;
+  Referencia := Tfrm_PesqProduto.GetRefResult;
+  //
+  if VarIsNull(Referencia) then Exit;
+  //
+  edt_Codigo.Text := Referencia;
+end;
+
+procedure Tfrm_ItemContaClienteComanda.edt_CodigoExit(Sender: TObject);
+const
+  SqlItem = ' select ID, VLR_VENDA, BALANCA, DESCRICAO '+
+            ' from VW_ITEM '+
+            ' where TIPO = 0 and ATIVO = ''A'' and '+
+            '      (REFERENCIA = :REFER or EAN1 = :EAN1 or '+
+            '       EAN2 = :EAN2 or EAN3 = :EAN3)';
+var
+  Peso, VlrUnit, VlrTotal: Double;
+begin
+  inherited;
+  //
+  if ActiveControl = btn_Cancela then Exit;
+  //
+  if Trim(edt_Codigo.Text) = '' then
+  begin
+      edt_Codigo.SetFocus;
+      Exit;
+  end;
+  //
+
+  with TClientDataSet.Create(Self) do
+  try
+      Data := DMRet.GetData(SqlItem,[edt_Codigo.Text, edt_Codigo.Text, edt_Codigo.Text, edt_Codigo.Text]);
+      //
+      if IsEmpty then
+      begin
+          ShowMessage('Item não cadastrado ou não está ativo!');
+          edt_Codigo.Clear;
+          edt_Codigo.SetFocus;
+          Exit;
+      end;
+
+      Peso     := 0;
+      VlrTotal := 0;
+      VlrUnit  := Fields[1].AsFloat;
+
+      DS_Item.DataSet.FieldByName('PRO_ID').Value := Fields[0].Value;
+      DS_Item.DataSet.FieldByName('DESCRICAO').Value := Fields[3].Value;
+      DS_Item.DataSet.FieldByName('ICC_VLR_UNIT').AsFloat := VlrUnit;
+
+      //Função Utilizada para Ler a Quantidade Pesada na Balança interligada a FRENTE
+      if TrabalhaComBalanca and (Fields.FieldByName('BALANCA').Value = 'S') then
+      begin
+        if TBalancaFactory.GetBalanca.GetValues(Peso, VlrUnit, VlrTotal) then
+        begin
+          with DS_Item.DataSet do
+          begin
+            FieldByName('ICC_QTDE').Value        := Peso;
+            FieldByName('ICC_VLR_UNIT').Value    := VlrUnit;
+            FieldByName('ICC_VLR_TOTAL').AsFloat := VlrTotal;
+          end;
+          //FieldByName('ICC_QTDE').AsFloat * FieldByName('ICC_VLR_UNIT').AsFloat;
+          //
+          btn_ConfirmaClick(Self);
+        end
+        else
+        begin
+          edt_Codigo.Text := '';
+          edt_Descricao.Text := '';
+          edt_Codigo.SetFocus;
+          Exit;
+        end;
+      end
+      else
+         DS_Item.DataSet.FieldByName('ICC_QTDE').Value   := 1;
+  finally
+    Free;
+  end;
+end;
+
+procedure Tfrm_ItemContaClienteComanda.edt_QtdeExit(Sender: TObject);
+begin
+  inherited;
+  CheckFieldNull(TDBEdit(Sender));
+  //
+  with DS_Item.DataSet do
+    FieldByName('ICC_VLR_TOTAL').AsFloat := FieldByName('ICC_QTDE').AsFloat *
+      FieldByName('ICC_VLR_UNIT').AsFloat;
+end;
+
+function Tfrm_ItemContaClienteComanda.TrabalhaComBalanca: Boolean;
+begin
+   Result := False;
+
+   if DMRet.OpenSQL('select PAR_BALANCA_CONTA_CLIENTE from params',[])= 'S' then
+       Result := True;
+end;
+
+end.

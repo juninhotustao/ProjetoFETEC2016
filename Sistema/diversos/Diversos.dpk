@@ -1,0 +1,77 @@
+package Diversos;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  Biblioteca,
+  dclOfficeXP,
+  vclimg,
+  SystemContext,
+  ACBr_Comum,
+  ACBr_synapse,
+  ACBr_TCP,
+  devartDAL,
+  adortl,
+  ipstudiowin,
+  rbDB1621,
+  ZipMasterR,
+  DelprintDXE7,
+  VclSmp;
+
+contains
+  U_ImpDuplicata in 'U_ImpDuplicata.pas',
+  U_GeraPlanilhaExcel in 'U_GeraPlanilhaExcel.pas',
+  U_Calculos in 'U_Calculos.pas',
+  U_Percentual in 'U_Percentual.pas' {frm_Percentual},
+  U_MatrizFilial in 'U_MatrizFilial.pas',
+  U_FunctionsArgox in 'U_FunctionsArgox.pas',
+  U_EmissaoCheques in 'U_EmissaoCheques.pas',
+  GifImage in 'GifImage.pas',
+  U_Backup in 'U_Backup.pas' {frm_Backup},
+  U_Utils in 'U_Utils.pas',
+  U_ParcelasPorData in 'U_ParcelasPorData.pas' {frm_ParcelasPorData},
+  U_ExportaArquivo in 'U_ExportaArquivo.pas',
+  U_LimpezaPeriodica in 'U_LimpezaPeriodica.pas' {frm_LimpezaPeriodica},
+  U_Email in 'U_Email.pas' {frm_Email},
+  U_ACBrStatus in 'U_ACBrStatus.pas' {frm_ACBrStatus},
+  U_ACBrChaveAcesso in 'U_ACBrChaveAcesso.pas' {frm_ACBrChaveAcesso},
+  U_ImpVenda in 'U_ImpVenda.pas',
+  U_Promissoria in 'U_Promissoria.pas' {DM_Promissoria: TDataModule},
+  U_DelayMsg in 'U_DelayMsg.pas' {frm_DelayMsg},
+  U_Memo in 'U_Memo.pas' {frm_Memo},
+  U_ViewEntCorrecao in 'U_ViewEntCorrecao.pas' {frm_ViewEntCorrecao},
+  U_ArquivoSiteSOVIL in 'U_ArquivoSiteSOVIL.pas' {frm_ArquivoSiteSOVIL},
+  U_AtualizacaoAuto in 'U_AtualizacaoAuto.pas' {frm_AtualizacaoAuto},
+  IdAntiFreeze in 'IdAntiFreeze.pas',
+  U_ImpComandaINF in 'U_ImpComandaINF.pas',
+  U_ImpComandaConf in 'U_ImpComandaConf.pas',
+  U_GeraInventario in 'Intentario\U_GeraInventario.pas' {frm_GeraInventario};
+
+end.

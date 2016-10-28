@@ -1,0 +1,59 @@
+inherited frm_LancContaClienteComanda: Tfrm_LancContaClienteComanda
+  Caption = 'frm_LancContaClienteComanda'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited CDS_Item: TClientDataSet
+    object CDS_ItemICC_OBSERVACAO: TStringField [12]
+      FieldName = 'ICC_OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 255
+    end
+    object CDS_ItemVDD_ID: TIntegerField [13]
+      FieldName = 'VDD_ID'
+    end
+  end
+  inherited DTS_Item: TSQLDataSet
+    CommandText = 
+      'select'#13#10#9'ICC_ID, CON_ID, CON_ID_ORIGEM,  PRO_ID, '#13#10'             ' +
+      '   ICC_QTDE, ICC_VLR_UNIT, ICC_VLR_TOTAL, '#13#10'                ICC_' +
+      'SITUACAO, ICC_OBSERVACAO, VDD_ID'#13#10'from'#13#10#9'ITEM_CONTA_CLIENTE'#13#10'whe' +
+      're'#13#10#9'CON_ID = :CON_ID'
+    object DTS_ItemICC_OBSERVACAO: TStringField
+      FieldName = 'ICC_OBSERVACAO'
+      ProviderFlags = [pfInUpdate]
+      Size = 255
+    end
+    object DTS_ItemVDD_ID: TIntegerField
+      FieldName = 'VDD_ID'
+    end
+  end
+  object DSPVendedor: TDataSetProvider
+    DataSet = DMRet.QryAux
+    Options = [poReadOnly, poAllowCommandText, poRetainServerOrder, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 416
+    Top = 227
+  end
+  object CDSVendedor: TClientDataSet
+    Aggregates = <>
+    CommandText = 'select VDD_ID, VDD_NOME from VENDEDOR order by VDD_NOME'
+    IndexName = 'DEFAULT_ORDER'
+    Params = <>
+    ProviderName = 'DSPVendedor'
+    Left = 416
+    Top = 272
+    object CDSVendedorVDD_ID: TIntegerField
+      FieldName = 'VDD_ID'
+    end
+    object CDSVendedorVDD_NOME: TStringField
+      FieldName = 'VDD_NOME'
+      Size = 90
+    end
+  end
+  object DSVendedor: TDataSource
+    AutoEdit = False
+    DataSet = CDSVendedor
+    Left = 415
+    Top = 318
+  end
+end
