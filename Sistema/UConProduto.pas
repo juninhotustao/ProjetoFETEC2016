@@ -28,6 +28,7 @@ type
     CDSPRO_PRECO_CUSTO: TFMTBCDField;
     CDSPRO_ESTOQUE_MAX: TIntegerField;
     procedure FormShow(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,6 +43,22 @@ implementation
 uses
   UCadProduto;
 {$R *.dfm}
+
+procedure TfrmConProduto.btnPesquisarClick(Sender: TObject);
+var
+  Params: array of Variant;
+begin
+  inherited;
+  CDS.Close;
+
+  SetLength(Params, 1);
+
+  Params[0] := edt_pesq.Text+'%';
+
+  CDS.Params[0].Value := Params[0];
+
+  CDS.Open;
+end;
 
 procedure TfrmConProduto.FormShow(Sender: TObject);
 begin

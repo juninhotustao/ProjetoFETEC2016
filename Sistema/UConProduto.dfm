@@ -1,13 +1,32 @@
 inherited frmConProduto: TfrmConProduto
   Caption = 'Consulta Produto'
+  ExplicitWidth = 574
+  ExplicitHeight = 352
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlRodape: TPanel
     inherited lblBusca: TLabel
-      Left = 162
-      Width = 41
-      ExplicitLeft = 162
-      ExplicitWidth = 41
+      Left = 28
+      Width = 68
+      Caption = 'Descri'#231#227'o:'
+      ExplicitLeft = 28
+      ExplicitWidth = 68
+    end
+    inherited edt_pesq: TEdit
+      Left = 100
+      Top = 10
+      Width = 334
+      Height = 36
+      AutoSize = False
+      Font.Height = -12
+      ParentFont = False
+      ExplicitLeft = 100
+      ExplicitTop = 10
+      ExplicitWidth = 334
+      ExplicitHeight = 36
+    end
+    inherited btnPesquisar: TButton
+      OnClick = btnPesquisarClick
     end
   end
   inherited Grid: TDBGrid
@@ -36,7 +55,13 @@ inherited frmConProduto: TfrmConProduto
   end
   inherited dbxDTS: TSQLDataSet
     SchemaName = 'sa'
-    CommandText = 'SELECT * FROM PRODUTO'
+    CommandText = 'SELECT * FROM PRODUTO WHERE PRO_DESCRICAO LIKE :DESCRICAO'
+    Params = <
+      item
+        DataType = ftString
+        Name = 'DESCRICAO'
+        ParamType = ptInput
+      end>
     object dbxDTSPRO_ID: TIntegerField
       FieldName = 'PRO_ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -80,6 +105,12 @@ inherited frmConProduto: TfrmConProduto
     end
   end
   inherited CDS: TClientDataSet
+    Params = <
+      item
+        DataType = ftString
+        Name = 'DESCRICAO'
+        ParamType = ptInput
+      end>
     object CDSPRO_ID: TIntegerField
       FieldName = 'PRO_ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -128,7 +159,7 @@ inherited frmConProduto: TfrmConProduto
   end
   inherited Icones: TImageList
     Bitmap = {
-      494C01013300C0018C0610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01013300C001940610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000A8A8A857373737C8060606F9151515EA66666699F3F3F30C0000
