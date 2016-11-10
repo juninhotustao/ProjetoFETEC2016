@@ -2,7 +2,8 @@ inherited frmVendas: TfrmVendas
   Caption = 'Vendas'
   ClientHeight = 396
   KeyPreview = True
-  ExplicitHeight = 424
+  ExplicitWidth = 747
+  ExplicitHeight = 425
   PixelsPerInch = 96
   TextHeight = 13
   inherited ToolBar1: TToolBar
@@ -111,26 +112,8 @@ inherited frmVendas: TfrmVendas
       AutoSize = False
       DataField = 'VEN_OBSERVACAO'
       DataSource = DS
-      TabOrder = 1
-      OnExit = dbObservacaoExit
-    end
-    object dtLancamento: TwwDBDateTimePicker
-      Left = 406
-      Top = 8
-      Width = 121
-      Height = 28
-      AutoSize = False
-      CalendarAttributes.Font.Charset = DEFAULT_CHARSET
-      CalendarAttributes.Font.Color = clWindowText
-      CalendarAttributes.Font.Height = -11
-      CalendarAttributes.Font.Name = 'Tahoma'
-      CalendarAttributes.Font.Style = []
-      DataField = 'VEN_DATA'
-      DataSource = DS
-      Epoch = 1950
-      ShowButton = True
       TabOrder = 0
-      DisplayFormat = 'dd/MM/yyyy'
+      OnExit = dbObservacaoExit
     end
   end
   inherited Panel1: TPanel
@@ -287,7 +270,7 @@ inherited frmVendas: TfrmVendas
   end
   inherited Icones: TImageList
     Bitmap = {
-      494C01012C00C0017C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012C00C001880210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

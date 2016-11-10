@@ -1,7 +1,0 @@
-inherited frm_ItemContaClienteComanda: Tfrm_ItemContaClienteComanda
-  Caption = 'Lan'#231'amento de Item da Conta de Cliente'
-  ExplicitWidth = 566
-  ExplicitHeight = 198
-  PixelsPerInch = 96
-  TextHeight = 13
-end

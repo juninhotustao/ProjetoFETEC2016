@@ -6,10 +6,10 @@ type
   TAtualizarEstoque = class
   strict private
     FEstoque: Double;
-    FPro_id: Integer;
+    FRef: Integer;
 
   public
-    procedure AtualizarEstoque(AMovimento: string; AQtde: Double; APro_id: Integer);
+    procedure AtualizarEstoque(AMovimento: string; AQtde: Double; ARef: string);
 
   end;
 
@@ -21,12 +21,12 @@ uses
 { TAtualizarEstoque }
 
 procedure TAtualizarEstoque.AtualizarEstoque(AMovimento: string; AQtde:
-  Double; APro_id: Integer);
+  Double; ARef: string);
 const
   EXECUTA_ATUALIZAR =
     'EXEC ATUALIZA_ESTOQUE :MOVIMENTO, :QTDE, :PRO_ID';
 begin
-  DMRet.ExecuteSQL(EXECUTA_ATUALIZAR, [AMovimento, AQtde, APro_id]);
+  DMRet.ExecuteSQL(EXECUTA_ATUALIZAR, [AMovimento, AQtde, ARef]);
 end;
 
 end.
