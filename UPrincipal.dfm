@@ -10,7 +10,7 @@ object FrmPrincipal: TFrmPrincipal
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Verdana'
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
@@ -22454,6 +22454,8 @@ object FrmPrincipal: TFrmPrincipal
     Align = alClient
     Color = clWhite
     TabOrder = 1
+    ExplicitLeft = -8
+    ExplicitTop = 62
     object Image1: TImage
       Left = 1
       Top = 275
@@ -24476,14 +24478,14 @@ object FrmPrincipal: TFrmPrincipal
       ExplicitWidth = 403
     end
     object lblVermelho: TLabel
-      Left = 299
+      Left = 261
       Top = 85
-      Width = 9
-      Height = 16
+      Width = 38
+      Height = 65
       Caption = '0'
       Font.Charset = ANSI_CHARSET
       Font.Color = clRed
-      Font.Height = -13
+      Font.Height = -53
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
@@ -24491,14 +24493,14 @@ object FrmPrincipal: TFrmPrincipal
       StyleElements = [seClient, seBorder]
     end
     object lblVerde: TLabel
-      Left = 208
+      Left = 170
       Top = 85
-      Width = 9
-      Height = 16
+      Width = 38
+      Height = 65
       Caption = '0'
       Font.Charset = ANSI_CHARSET
       Font.Color = clGreen
-      Font.Height = -13
+      Font.Height = -53
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
@@ -24506,14 +24508,14 @@ object FrmPrincipal: TFrmPrincipal
       StyleElements = [seClient, seBorder]
     end
     object lblAzul: TLabel
-      Left = 392
+      Left = 354
       Top = 85
-      Width = 9
-      Height = 16
+      Width = 38
+      Height = 65
       Caption = '0'
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
-      Font.Height = -13
+      Font.Height = -53
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
@@ -24521,7 +24523,7 @@ object FrmPrincipal: TFrmPrincipal
       StyleElements = [seClient, seBorder]
     end
     object Label5: TLabel
-      Left = 536
+      Left = 504
       Top = 1
       Width = 129
       Height = 274
@@ -24536,14 +24538,15 @@ object FrmPrincipal: TFrmPrincipal
       ParentFont = False
       Transparent = True
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 520
+      ExplicitLeft = 535
     end
     object Label6: TLabel
-      Left = 665
+      Left = 633
       Top = 1
-      Width = 63
+      Width = 95
       Height = 274
       Align = alRight
+      AutoSize = False
       Caption = '---------'
       Font.Charset = ANSI_CHARSET
       Font.Color = clNavy
@@ -24553,9 +24556,22 @@ object FrmPrincipal: TFrmPrincipal
       ParentFont = False
       Transparent = True
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 586
-      ExplicitTop = 6
-      ExplicitHeight = 16
+      ExplicitLeft = 634
+    end
+    object lblBranco: TLabel
+      Left = 85
+      Top = 85
+      Width = 38
+      Height = 65
+      Caption = '0'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clHighlightText
+      Font.Height = -53
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+      StyleElements = [seClient, seBorder]
     end
   end
   object ComPort1: TComPort
@@ -24574,7 +24590,7 @@ object FrmPrincipal: TFrmPrincipal
     StoredProps = [spBasic]
     TriggersOnRxChar = True
     OnRxChar = ComPort1RxChar
-    Left = 256
-    Top = 184
+    Left = 376
+    Top = 8
   end
 end

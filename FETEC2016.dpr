@@ -23,7 +23,8 @@ uses
   ULancItemVendas in 'Sistema\lancamento\ULancItemVendas.pas' {frmLancItemVendas},
   UConProduto in 'Sistema\UConProduto.pas' {frmConProduto},
   UCadProduto in 'Sistema\UCadProduto.pas' {frmCadProduto},
-  UPesqVendas in 'Sistema\lancamento\Pesquisa\UPesqVendas.pas' {FrmPesqVendas};
+  UPesqVendas in 'Sistema\lancamento\Pesquisa\UPesqVendas.pas' {FrmPesqVendas},
+  UAtualizar in 'Sistema\biblioteca\UAtualizar.pas';
 
 {$R *.res}
 

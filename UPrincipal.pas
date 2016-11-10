@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, CPort, ExtCtrls, Buttons, System.UITypes, Vcl.Menus;
+  Dialogs, StdCtrls, CPort, ExtCtrls, Buttons, System.UITypes, Vcl.Menus,
+  Vcl.Imaging.pngimage;
 
 type
   TFrmPrincipal = class(TForm)
@@ -20,6 +21,7 @@ type
     imgProduto: TImage;
     imgVendas: TImage;
     imgConfiguracao: TImage;
+    lblBranco: TLabel;
     procedure ComPort1RxChar(Sender: TObject; Count: Integer);
     function VerificaConexao: Boolean;
     procedure FormShow(Sender: TObject);
