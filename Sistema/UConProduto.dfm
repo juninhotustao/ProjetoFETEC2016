@@ -28,6 +28,19 @@ inherited frmConProduto: TfrmConProduto
     inherited btnPesquisar: TButton
       OnClick = btnPesquisarClick
     end
+    object btnZerarEstoque: TButton
+      Left = 5
+      Top = 10
+      Width = 20
+      Height = 36
+      Hint = 'Zerar Estoque dos Produtos'
+      ImageIndex = 31
+      Images = Icones
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      OnClick = btnZerarEstoqueClick
+    end
   end
   inherited Grid: TDBGrid
     Columns = <
@@ -159,7 +172,7 @@ inherited frmConProduto: TfrmConProduto
   end
   inherited Icones: TImageList
     Bitmap = {
-      494C01013300C001940610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01013300C0019C0610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000A8A8A857373737C8060606F9151515EA66666699F3F3F30C0000

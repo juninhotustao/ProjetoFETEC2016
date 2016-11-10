@@ -27,8 +27,10 @@ type
     CDSPRO_PRECO_VENDA: TFMTBCDField;
     CDSPRO_PRECO_CUSTO: TFMTBCDField;
     CDSPRO_ESTOQUE_MAX: TIntegerField;
+    btnZerarEstoque: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnPesquisarClick(Sender: TObject);
+    procedure btnZerarEstoqueClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,7 +43,7 @@ var
 implementation
 
 uses
-  UCadProduto;
+  UCadProduto, U_DMRet;
 {$R *.dfm}
 
 procedure TfrmConProduto.btnPesquisarClick(Sender: TObject);
@@ -58,6 +60,23 @@ begin
   CDS.Params[0].Value := Params[0];
 
   CDS.Open;
+end;
+
+procedure TfrmConProduto.btnZerarEstoqueClick(Sender: TObject);
+const
+  UPD_ESTOQUE_PRODUTO =
+    'UPDATE PRODUTO SET PRO_ESTOQUE = 0';
+begin
+  try
+    if MessageBox(Handle, 'Deseja continuar ?', 'ATENÇÃO', MB_ICONEXCLAMATION+MB_YESNO) = IDYES then
+      DMRet.ExecuteSQL(UPD_ESTOQUE_PRODUTO, [])
+    else
+      exit;
+
+    MessageBox(Handle, 'Concluído com sucesso!', 'ATENÇÃO', MB_OK);
+  except
+    MessageBox(Handle, 'Erro ao Zerar estoque', 'ATENÇÃO', MB_OK);
+  end;
 end;
 
 procedure TfrmConProduto.FormShow(Sender: TObject);

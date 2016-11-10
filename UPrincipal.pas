@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, CPort, ExtCtrls, Buttons, System.UITypes, Vcl.Menus,
-  Vcl.Imaging.pngimage, UAtualizar;
+  Vcl.Imaging.pngimage, UAtualizar, Vcl.Imaging.jpeg;
 type
   TFrmPrincipal = class(TForm)
     ComPort1: TComPort;
@@ -24,6 +24,12 @@ type
     lblAmarelo: TLabel;
     lblLaranja: TLabel;
     imgRelatorio: TImage;
+    imgMarron: TImage;
+    ImgAmarelo: TImage;
+    ImgAzul: TImage;
+    ImgVerde: TImage;
+    ImgVermelho: TImage;
+    ImgLaranja: TImage;
     procedure ComPort1RxChar(Sender: TObject; Count: Integer);
     function VerificaConexao: Boolean;
     procedure FormShow(Sender: TObject);

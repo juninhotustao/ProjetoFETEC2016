@@ -3,7 +3,7 @@ object frm_Relatorio: Tfrm_Relatorio
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Relat'#243'rio'
-  ClientHeight = 359
+  ClientHeight = 137
   ClientWidth = 500
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,10 +20,10 @@ object frm_Relatorio: Tfrm_Relatorio
     Left = 0
     Top = 0
     Width = 500
-    Height = 359
+    Height = 137
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 333
+    ExplicitHeight = 140
     object lblNome: TLabel
       Left = 17
       Top = 150
@@ -115,9 +115,6 @@ object frm_Relatorio: Tfrm_Relatorio
         'Acumulado'
         'Discriminado')
       TabOrder = 3
-      ExplicitLeft = 152
-      ExplicitTop = 8
-      ExplicitWidth = 193
     end
     object dtInicial: TDateTimePicker
       Left = 84
@@ -194,7 +191,6 @@ object frm_Relatorio: Tfrm_Relatorio
     Top = 187
   end
   object CDSAcumulado: TClientDataSet
-    Active = True
     Aggregates = <>
     IndexName = 'DEFAULT_ORDER'
     PacketRecords = 50
@@ -283,7 +279,6 @@ object frm_Relatorio: Tfrm_Relatorio
     Top = 179
   end
   object CDSDiscriminado: TClientDataSet
-    Active = True
     Aggregates = <>
     IndexName = 'DEFAULT_ORDER'
     PacketRecords = 50
@@ -360,6 +355,8 @@ object frm_Relatorio: Tfrm_Relatorio
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPercentage
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
     RTFSettings.DefaultFont.Color = clWindowText
     RTFSettings.DefaultFont.Height = -13
@@ -449,9 +446,9 @@ object frm_Relatorio: Tfrm_Relatorio
         Transparent = True
         DataPipelineName = 'pipAcumulado'
         mmHeight = 4498
-        mmLeft = 12168
+        mmLeft = 12963
         mmTop = 795
-        mmWidth = 81030
+        mmWidth = 79440
         BandType = 4
         LayerName = Foreground
       end
@@ -469,7 +466,7 @@ object frm_Relatorio: Tfrm_Relatorio
         mmHeight = 5027
         mmLeft = 93927
         mmTop = 265
-        mmWidth = 19050
+        mmWidth = 17990
         BandType = 4
         LayerName = Foreground
       end
@@ -486,7 +483,7 @@ object frm_Relatorio: Tfrm_Relatorio
         Transparent = True
         DataPipelineName = 'pipAcumulado'
         mmHeight = 4498
-        mmLeft = 111460
+        mmLeft = 112520
         mmTop = 264
         mmWidth = 50025
         BandType = 4
@@ -685,32 +682,41 @@ object frm_Relatorio: Tfrm_Relatorio
       FieldAlias = 'VEN_DATA'
       FieldName = 'VEN_DATA'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object pipAcumuladoppField2: TppField
       FieldAlias = 'VEN_OBSERVACAO'
       FieldName = 'VEN_OBSERVACAO'
-      FieldLength = 70
-      DisplayWidth = 70
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object pipAcumuladoppField3: TppField
       FieldAlias = 'ITE_PRO_DESCRICAO'
       FieldName = 'ITE_PRO_DESCRICAO'
-      FieldLength = 50
-      DisplayWidth = 50
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object pipAcumuladoppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'ITE_QTDE'
       FieldName = 'ITE_QTDE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 13
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
   end
   object repDiscriminado: TppReport
@@ -750,6 +756,8 @@ object frm_Relatorio: Tfrm_Relatorio
     PDFSettings.EncryptSettings.KeyLength = kl40Bit
     PDFSettings.FontEncoding = feAnsi
     PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPercentage
     RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
     RTFSettings.DefaultFont.Color = clWindowText
     RTFSettings.DefaultFont.Height = -13
@@ -822,7 +830,7 @@ object frm_Relatorio: Tfrm_Relatorio
         mmHeight = 5027
         mmLeft = 529
         mmTop = 265
-        mmWidth = 19050
+        mmWidth = 17990
         BandType = 4
         LayerName = Foreground1
       end
@@ -839,9 +847,9 @@ object frm_Relatorio: Tfrm_Relatorio
         Transparent = True
         DataPipelineName = 'pipDiscriminado'
         mmHeight = 4498
-        mmLeft = 17992
+        mmLeft = 19052
         mmTop = 265
-        mmWidth = 78317
+        mmWidth = 76727
         BandType = 4
         LayerName = Foreground1
       end
@@ -1115,41 +1123,51 @@ object frm_Relatorio: Tfrm_Relatorio
       FieldAlias = 'ITE_REFERENCIA'
       FieldName = 'ITE_REFERENCIA'
       FieldLength = 0
+      DataType = dtNotKnown
       DisplayWidth = 0
       Position = 0
+      Searchable = False
+      Sortable = False
     end
     object pipDiscriminadoppField2: TppField
       FieldAlias = 'ITE_PRO_DESCRICAO'
       FieldName = 'ITE_PRO_DESCRICAO'
-      FieldLength = 50
-      DisplayWidth = 50
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 1
+      Searchable = False
+      Sortable = False
     end
     object pipDiscriminadoppField3: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE'
       FieldName = 'QTDE'
-      FieldLength = 2
-      DataType = dtDouble
-      DisplayWidth = 33
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 2
+      Searchable = False
+      Sortable = False
     end
     object pipDiscriminadoppField4: TppField
-      Alignment = taRightJustify
       FieldAlias = 'QTDE_COPO'
       FieldName = 'QTDE_COPO'
-      FieldLength = 6
-      DataType = dtDouble
-      DisplayWidth = 33
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 3
+      Searchable = False
+      Sortable = False
     end
     object pipDiscriminadoppField5: TppField
       FieldAlias = 'VEN_DATA'
       FieldName = 'VEN_DATA'
       FieldLength = 0
-      DataType = dtDateTime
-      DisplayWidth = 34
+      DataType = dtNotKnown
+      DisplayWidth = 0
       Position = 4
+      Searchable = False
+      Sortable = False
     end
   end
 end

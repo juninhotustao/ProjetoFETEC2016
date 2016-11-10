@@ -2,7 +2,6 @@ inherited frmVendas: TfrmVendas
   Caption = 'Vendas'
   ClientHeight = 396
   KeyPreview = True
-  ExplicitWidth = 747
   ExplicitHeight = 424
   PixelsPerInch = 96
   TextHeight = 13
@@ -11,9 +10,6 @@ inherited frmVendas: TfrmVendas
       Visible = True
     end
     inherited btn_exc: TToolButton
-      Visible = True
-    end
-    inherited btn_can: TToolButton
       Visible = True
     end
     inherited btn_sal: TToolButton
@@ -286,7 +282,7 @@ inherited frmVendas: TfrmVendas
   end
   inherited Icones: TImageList
     Bitmap = {
-      494C01012C00C001900210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012C00C001980210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
