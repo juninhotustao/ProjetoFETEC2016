@@ -20,7 +20,6 @@ type
     imgProduto: TImage;
     imgVendas: TImage;
     imgConfiguracao: TImage;
-    lblBranco: TLabel;
     lblMarrom: TLabel;
     lblAmarelo: TLabel;
     lblLaranja: TLabel;

@@ -24,7 +24,8 @@ uses
   UConProduto in 'Sistema\UConProduto.pas' {frmConProduto},
   UCadProduto in 'Sistema\UCadProduto.pas' {frmCadProduto},
   UPesqVendas in 'Sistema\lancamento\Pesquisa\UPesqVendas.pas' {FrmPesqVendas},
-  UAtualizar in 'Sistema\biblioteca\UAtualizar.pas';
+  UAtualizar in 'Sistema\biblioteca\UAtualizar.pas',
+  URelatorio in 'Sistema\relatorio\URelatorio.pas' {frm_Relatorio};
 
 {$R *.res}
 
@@ -35,5 +36,6 @@ begin
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TDMRet, DMRet);
   Application.CreateForm(TFrmPesqVendas, FrmPesqVendas);
+  Application.CreateForm(Tfrm_Relatorio, frm_Relatorio);
   Application.Run;
 end.

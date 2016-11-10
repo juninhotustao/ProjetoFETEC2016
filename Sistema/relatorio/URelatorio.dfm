@@ -3,7 +3,7 @@ object frm_Relatorio: Tfrm_Relatorio
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Relat'#243'rio'
-  ClientHeight = 174
+  ClientHeight = 359
   ClientWidth = 500
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,18 +13,20 @@ object frm_Relatorio: Tfrm_Relatorio
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnl_Relatorio: TPanel
     Left = 0
     Top = 0
     Width = 500
-    Height = 174
+    Height = 359
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 333
     object lblNome: TLabel
-      Left = 9
-      Top = 18
+      Left = 17
+      Top = 150
       Width = 52
       Height = 19
       AutoSize = False
@@ -36,10 +38,37 @@ object frm_Relatorio: Tfrm_Relatorio
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
+      Visible = False
+    end
+    object lbldtInicio: TLabel
+      Left = 33
+      Top = 71
+      Width = 49
+      Height = 16
+      Caption = 'Inicio: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbldtFinal: TLabel
+      Left = 268
+      Top = 71
+      Width = 44
+      Height = 16
+      Caption = 'Final: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object btnGerar: TButton
-      Left = 163
-      Top = 111
+      Left = 160
+      Top = 99
       Width = 165
       Height = 33
       Caption = 'Gerar'
@@ -47,8 +76,8 @@ object frm_Relatorio: Tfrm_Relatorio
       OnClick = btnGerarClick
     end
     object edtNome: TEdit
-      Left = 68
-      Top = 15
+      Left = 76
+      Top = 147
       Width = 361
       Height = 27
       Enabled = False
@@ -59,28 +88,65 @@ object frm_Relatorio: Tfrm_Relatorio
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      Visible = False
     end
     object chkTodos: TCheckBox
-      Left = 434
-      Top = 22
+      Left = 442
+      Top = 154
       Width = 51
       Height = 17
       Caption = 'Todos'
       Checked = True
       State = cbChecked
       TabOrder = 2
+      Visible = False
       OnClick = chkTodosClick
+    end
+    object rgTipoRelatorio: TRadioGroup
+      Left = 1
+      Top = 1
+      Width = 498
+      Height = 41
+      Align = alTop
+      Caption = 'Tipo Relat'#243'rio'
+      Columns = 2
+      ItemIndex = 0
+      Items.Strings = (
+        'Acumulado'
+        'Discriminado')
+      TabOrder = 3
+      ExplicitLeft = 152
+      ExplicitTop = 8
+      ExplicitWidth = 193
+    end
+    object dtInicial: TDateTimePicker
+      Left = 84
+      Top = 68
+      Width = 121
+      Height = 21
+      Date = 42684.385989756940000000
+      Time = 42684.385989756940000000
+      TabOrder = 4
+    end
+    object dtFin: TDateTimePicker
+      Left = 316
+      Top = 68
+      Width = 121
+      Height = 21
+      Date = 42684.385989756940000000
+      Time = 42684.385989756940000000
+      TabOrder = 5
     end
   end
   object DsAcumulado: TDataSource
     DataSet = CDSAcumulado
     Left = 104
-    Top = 116
+    Top = 244
   end
   object DsDiscriminado: TDataSource
     DataSet = CDSDiscriminado
     Left = 440
-    Top = 120
+    Top = 232
   end
   object DTSAcumulado: TSQLDataSet
     GetMetadata = False
@@ -102,7 +168,7 @@ object frm_Relatorio: Tfrm_Relatorio
       end>
     SQLConnection = DMRet.Con
     Left = 24
-    Top = 58
+    Top = 186
     object DTSAcumuladoVEN_DATA: TSQLTimeStampField
       FieldName = 'VEN_DATA'
     end
@@ -125,7 +191,7 @@ object frm_Relatorio: Tfrm_Relatorio
     Options = [poFetchDetailsOnDemand, poAutoRefresh, poPropogateChanges, poRetainServerOrder, poUseQuoteChar]
     UpdateMode = upWhereKeyOnly
     Left = 104
-    Top = 59
+    Top = 187
   end
   object CDSAcumulado: TClientDataSet
     Active = True
@@ -145,7 +211,7 @@ object frm_Relatorio: Tfrm_Relatorio
       end>
     ProviderName = 'DSPAcumulado'
     Left = 26
-    Top = 116
+    Top = 244
     object CDSAcumuladoVEN_DATA: TSQLTimeStampField
       FieldName = 'VEN_DATA'
     end
@@ -167,11 +233,11 @@ object frm_Relatorio: Tfrm_Relatorio
     SchemaName = 'sa'
     GetMetadata = False
     CommandText = 
-      'SELECT '#13#10#9'ITE_REFERENCIA, ITE_PRO_DESCRICAO, SUM(ITE_QTDE) AS QT' +
-      'DE, SUM(ITE_QTDE)/10 AS QTDE_COPO'#13#10'FROM '#13#10#9'VENDA V '#13#10'INNER JOIN ' +
-      #13#10#9'ITEM_VENDA I ON V.VEN_ID = I.VEN_ID'#13#10'WHERE'#13#10#9'VEN_DATA BETWEEN' +
-      ' :DT_INI AND :DT_FIN'#13#10'GROUP BY'#13#10'               ITE_REFERENCIA, I' +
-      'TE_PRO_DESCRICAO'
+      'SELECT '#13#10#9'VEN_DATA, ITE_REFERENCIA, ITE_PRO_DESCRICAO, SUM(ITE_Q' +
+      'TDE) AS QTDE, SUM(ITE_QTDE)/10 AS QTDE_COPO'#13#10'FROM '#13#10#9'VENDA V '#13#10'I' +
+      'NNER JOIN '#13#10#9'ITEM_VENDA I ON V.VEN_ID = I.VEN_ID'#13#10'WHERE'#13#10#9'VEN_DA' +
+      'TA BETWEEN :DT_INI AND :DT_FIN'#13#10'GROUP BY'#13#10'               VEN_DAT' +
+      'A, ITE_REFERENCIA, ITE_PRO_DESCRICAO'
     MaxBlobSize = -1
     Params = <
       item
@@ -186,7 +252,7 @@ object frm_Relatorio: Tfrm_Relatorio
       end>
     SQLConnection = DMRet.Con
     Left = 352
-    Top = 66
+    Top = 178
     object SQLDiscriminadoITE_REFERENCIA: TStringField
       FieldName = 'ITE_REFERENCIA'
       Size = 9
@@ -205,22 +271,36 @@ object frm_Relatorio: Tfrm_Relatorio
       Precision = 32
       Size = 6
     end
+    object SQLDiscriminadoVEN_DATA: TSQLTimeStampField
+      FieldName = 'VEN_DATA'
+    end
   end
   object DSPDiscriminado: TDataSetProvider
     DataSet = SQLDiscriminado
     Options = [poFetchDetailsOnDemand, poAutoRefresh, poPropogateChanges, poRetainServerOrder, poUseQuoteChar]
     UpdateMode = upWhereKeyOnly
     Left = 432
-    Top = 67
+    Top = 179
   end
   object CDSDiscriminado: TClientDataSet
+    Active = True
     Aggregates = <>
     IndexName = 'DEFAULT_ORDER'
     PacketRecords = 50
-    Params = <>
+    Params = <
+      item
+        DataType = ftDateTime
+        Name = 'DT_INI'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftDateTime
+        Name = 'DT_FIN'
+        ParamType = ptInput
+      end>
     ProviderName = 'DSPDiscriminado'
     Left = 354
-    Top = 124
+    Top = 236
     object CDSDiscriminadoITE_REFERENCIA: TStringField
       FieldName = 'ITE_REFERENCIA'
       Size = 9
@@ -238,6 +318,9 @@ object frm_Relatorio: Tfrm_Relatorio
       FieldName = 'QTDE_COPO'
       Precision = 32
       Size = 6
+    end
+    object CDSDiscriminadoVEN_DATA: TSQLTimeStampField
+      FieldName = 'VEN_DATA'
     end
   end
   object repAcumulado: TppReport
@@ -289,8 +372,8 @@ object frm_Relatorio: Tfrm_Relatorio
     XLSSettings.Author = 'ReportBuilder'
     XLSSettings.Subject = 'Report'
     XLSSettings.Title = 'Report'
-    Left = 184
-    Top = 56
+    Left = 176
+    Top = 187
     Version = '16.02'
     mmColumnWidth = 0
     DataPipelineName = 'pipAcumulado'
@@ -333,7 +416,7 @@ object frm_Relatorio: Tfrm_Relatorio
       Background1.Brush.Style = bsClear
       Background2.Brush.Style = bsClear
       mmBottomOffset = 0
-      mmHeight = 5821
+      mmHeight = 6350
       mmPrintPosition = 0
       object ppLabel3: TppLabel
         DesignLayer = ppDesignLayer1
@@ -596,14 +679,14 @@ object frm_Relatorio: Tfrm_Relatorio
   object pipAcumulado: TppDBPipeline
     DataSource = DsAcumulado
     UserName = 'pipAcumulado'
-    Left = 253
-    Top = 56
+    Left = 245
+    Top = 187
     object pipAcumuladoppField1: TppField
       FieldAlias = 'VEN_DATA'
       FieldName = 'VEN_DATA'
       FieldLength = 0
       DataType = dtDateTime
-      DisplayWidth = 0
+      DisplayWidth = 34
       Position = 0
     end
     object pipAcumuladoppField2: TppField
@@ -628,6 +711,445 @@ object frm_Relatorio: Tfrm_Relatorio
       DataType = dtDouble
       DisplayWidth = 13
       Position = 3
+    end
+  end
+  object repDiscriminado: TppReport
+    AutoStop = False
+    DataPipeline = pipDiscriminado
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'Carta'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 279400
+    PrinterSetup.mmPaperWidth = 215900
+    PrinterSetup.PaperSize = 1
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 360
+    Top = 283
+    Version = '16.02'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipDiscriminado'
+    object ppHeaderBand2: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 14288
+      mmPrintPosition = 0
+      object ppLabel7: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label1'
+        Caption = 'Relat'#243'rio FETEC - 2016'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = 'Arial'
+        Font.Size = 18
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 7673
+        mmLeft = 9525
+        mmTop = 3175
+        mmWidth = 69850
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line1'
+        Weight = 0.750000000000000000
+        mmHeight = 1319
+        mmLeft = 0
+        mmTop = 12434
+        mmWidth = 203730
+        BandType = 0
+        LayerName = Foreground1
+      end
+    end
+    object ppDetailBand2: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5821
+      mmPrintPosition = 0
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label4'
+        Caption = 'Produto: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 529
+        mmTop = 265
+        mmWidth = 19050
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText3'
+        DataField = 'ITE_PRO_DESCRICAO'
+        DataPipeline = pipDiscriminado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipDiscriminado'
+        mmHeight = 4498
+        mmLeft = 17992
+        mmTop = 265
+        mmWidth = 78317
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label5'
+        Caption = 'Qtde: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 97367
+        mmTop = 265
+        mmWidth = 12171
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText4'
+        DataField = 'QTDE'
+        DataPipeline = pipDiscriminado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipDiscriminado'
+        mmHeight = 4498
+        mmLeft = 110067
+        mmTop = 265
+        mmWidth = 25400
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText5'
+        DataField = 'QTDE_COPO'
+        DataPipeline = pipDiscriminado
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipDiscriminado'
+        mmHeight = 4498
+        mmLeft = 165384
+        mmTop = 265
+        mmWidth = 25400
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label8'
+        Caption = 'Qtde Copos: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 136790
+        mmTop = 0
+        mmWidth = 26723
+        BandType = 4
+        LayerName = Foreground1
+      end
+    end
+    object ppFooterBand2: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 3440
+      mmPrintPosition = 0
+    end
+    object ppGroup2: TppGroup
+      BreakName = 'VEN_DATA'
+      DataPipeline = pipDiscriminado
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group1'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'pipDiscriminado'
+      NewFile = False
+      object ppGroupHeaderBand2: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 5556
+        mmPrintPosition = 0
+        object ppLabel11: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label2'
+          Caption = 'Data: '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 5027
+          mmLeft = 1588
+          mmTop = 265
+          mmWidth = 11906
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText8: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText1'
+          DataField = 'VEN_DATA'
+          DataPipeline = pipDiscriminado
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 11
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipDiscriminado'
+          mmHeight = 4498
+          mmLeft = 14280
+          mmTop = 265
+          mmWidth = 38365
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLine5: TppLine
+          DesignLayer = ppDesignLayer2
+          UserName = 'Line3'
+          Weight = 0.750000000000000000
+          mmHeight = 1319
+          mmLeft = 0
+          mmTop = 5026
+          mmWidth = 203730
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+      end
+      object ppGroupFooterBand2: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 6615
+        mmPrintPosition = 0
+        object ppLabel12: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label6'
+          Caption = 'Total Qtde: '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 5027
+          mmLeft = 86253
+          mmTop = 1323
+          mmWidth = 23283
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBCalc2: TppDBCalc
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBCalc1'
+          DataField = 'QTDE'
+          DataPipeline = pipDiscriminado
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = []
+          ResetGroup = ppGroup2
+          Transparent = True
+          DataPipelineName = 'pipDiscriminado'
+          mmHeight = 4498
+          mmLeft = 110065
+          mmTop = 1323
+          mmWidth = 25400
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLine6: TppLine
+          DesignLayer = ppDesignLayer2
+          UserName = 'Line2'
+          Weight = 0.750000000000000000
+          mmHeight = 1319
+          mmLeft = 0
+          mmTop = 0
+          mmWidth = 203730
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel13: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label13'
+          Caption = 'Total Copos: '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 5027
+          mmLeft = 136790
+          mmTop = 1323
+          mmWidth = 26722
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBCalc3: TppDBCalc
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBCalc2'
+          DataField = 'QTDE_COPO'
+          DataPipeline = pipDiscriminado
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = []
+          ResetGroup = ppGroup2
+          Transparent = True
+          DataPipelineName = 'pipDiscriminado'
+          mmHeight = 4498
+          mmLeft = 165360
+          mmTop = 1319
+          mmWidth = 25405
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+      end
+    end
+    object ppDesignLayers2: TppDesignLayers
+      object ppDesignLayer2: TppDesignLayer
+        UserName = 'Foreground1'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList2: TppParameterList
+    end
+  end
+  object pipDiscriminado: TppDBPipeline
+    DataSource = DsDiscriminado
+    UserName = 'pipDiscriminado'
+    Left = 441
+    Top = 283
+    object pipDiscriminadoppField1: TppField
+      FieldAlias = 'ITE_REFERENCIA'
+      FieldName = 'ITE_REFERENCIA'
+      FieldLength = 0
+      DisplayWidth = 0
+      Position = 0
+    end
+    object pipDiscriminadoppField2: TppField
+      FieldAlias = 'ITE_PRO_DESCRICAO'
+      FieldName = 'ITE_PRO_DESCRICAO'
+      FieldLength = 50
+      DisplayWidth = 50
+      Position = 1
+    end
+    object pipDiscriminadoppField3: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE'
+      FieldName = 'QTDE'
+      FieldLength = 2
+      DataType = dtDouble
+      DisplayWidth = 33
+      Position = 2
+    end
+    object pipDiscriminadoppField4: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'QTDE_COPO'
+      FieldName = 'QTDE_COPO'
+      FieldLength = 6
+      DataType = dtDouble
+      DisplayWidth = 33
+      Position = 3
+    end
+    object pipDiscriminadoppField5: TppField
+      FieldAlias = 'VEN_DATA'
+      FieldName = 'VEN_DATA'
+      FieldLength = 0
+      DataType = dtDateTime
+      DisplayWidth = 34
+      Position = 4
     end
   end
 end

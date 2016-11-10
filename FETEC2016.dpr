@@ -31,7 +31,6 @@ uses
 
 begin
   Application.Initialize;
-  TStyleManager.TrySetStyle('Slate Classico');
   Application.Title := 'FETEC - 2016 CEMES';
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TDMRet, DMRet);

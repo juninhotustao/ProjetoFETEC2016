@@ -8,7 +8,7 @@ uses
   Vcl.Menus, Data.DB, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   Vcl.StdCtrls, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls,
   Vcl.ToolWin, Vcl.Mask, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup,
-  UAtualizar;
+  UAtualizar, vcl.Wwdbdatetimepicker;
 
 type
   TfrmVendas = class(Tfrm_LancBase)
@@ -46,6 +46,7 @@ type
     DTSVEN_DATA: TSQLTimeStampField;
     CDSVEN_DATA: TSQLTimeStampField;
     lblData: TLabel;
+    dtLancamento: TwwDBDateTimePicker;
     procedure btn_novClick(Sender: TObject);
     procedure Edit1Exit(Sender: TObject);
     procedure Edit2Exit(Sender: TObject);
@@ -105,7 +106,7 @@ begin
   inherited;
 
   HabilitaPanelCabecalho(True);
-//  dtLancamento.SetFocus;
+  dtLancamento.SetFocus;
 end;
 
 procedure TfrmVendas.btn_canClick(Sender: TObject);
@@ -130,6 +131,7 @@ end;
 procedure TfrmVendas.btn_novClick(Sender: TObject);
 begin
   CDS.Insert;
+  CDS_ITEM.Close;
 
   CDSVEN_DATA.AsDateTime := Date;
 end;
@@ -148,6 +150,7 @@ begin
 
   CDSVEN_DESCONTO.AsFloat := 0;
   CDSVEN_TOTAL.AsFloat    := 0;
+  dtLancamento.SetFocus;
 end;
 
 procedure TfrmVendas.CDSAfterPost(DataSet: TDataSet);
@@ -155,6 +158,7 @@ begin
   inherited;
 
   HabilitaPanelCabecalho(False);
+  Edit1.SetFocus;
 end;
 
 procedure TfrmVendas.CDS_ITEMAfterDelete(DataSet: TDataSet);
@@ -247,7 +251,7 @@ procedure TfrmVendas.dtLancamentoChange(Sender: TObject);
 begin
   inherited;
 
-//  dtLancamento.DateTime := Date;
+  dtLancamento.DateTime := Date;
 end;
 
 procedure TfrmVendas.Edit1Exit(Sender: TObject);

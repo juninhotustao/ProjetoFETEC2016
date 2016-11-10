@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
   Data.Win.ADODB, U_DMRet, Data.FMTBcd, Datasnap.DBClient, Datasnap.Provider,
   Data.SqlExpr, ppDB, ppDBPipe, ppComm, ppRelatv, ppProd, ppClass, ppReport,
-  ppBands, ppCache, ppDesignLayer, ppParameter, ppCtrls, ppPrnabl;
+  ppBands, ppCache, ppDesignLayer, ppParameter, ppCtrls, ppPrnabl, Vcl.ComCtrls;
 
 type
   Tfrm_Relatorio = class(TForm)
@@ -65,8 +65,43 @@ type
     ppDBCalc1: TppDBCalc;
     ppLine2: TppLine;
     ppLine3: TppLine;
+    rgTipoRelatorio: TRadioGroup;
+    dtInicial: TDateTimePicker;
+    dtFin: TDateTimePicker;
+    lbldtInicio: TLabel;
+    lbldtFinal: TLabel;
+    repDiscriminado: TppReport;
+    ppHeaderBand2: TppHeaderBand;
+    ppLabel7: TppLabel;
+    ppLine4: TppLine;
+    ppDetailBand2: TppDetailBand;
+    ppLabel9: TppLabel;
+    ppDBText6: TppDBText;
+    ppLabel10: TppLabel;
+    ppDBText7: TppDBText;
+    ppFooterBand2: TppFooterBand;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    ppLabel11: TppLabel;
+    ppDBText8: TppDBText;
+    ppLine5: TppLine;
+    ppGroupFooterBand2: TppGroupFooterBand;
+    ppLabel12: TppLabel;
+    ppDBCalc2: TppDBCalc;
+    ppLine6: TppLine;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppParameterList2: TppParameterList;
+    pipDiscriminado: TppDBPipeline;
+    SQLDiscriminadoVEN_DATA: TSQLTimeStampField;
+    CDSDiscriminadoVEN_DATA: TSQLTimeStampField;
+    ppDBText5: TppDBText;
+    ppLabel8: TppLabel;
+    ppLabel13: TppLabel;
+    ppDBCalc3: TppDBCalc;
     procedure chkTodosClick(Sender: TObject);
     procedure btnGerarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -82,20 +117,53 @@ implementation
 
 procedure Tfrm_Relatorio.btnGerarClick(Sender: TObject);
 begin
-  CDSAcumulado.Close;
+  case rgTipoRelatorio.ItemIndex of
+    0:
+    begin
+      CDSAcumulado.Close;
 
-  CDSAcumulado.Params[0].Value := '10/11/2016';
-  CDSAcumulado.Params[1].Value := date;
-  CDSAcumulado.Open;
+      CDSAcumulado.Params[0].Value := dtInicial.DateTime;
+      CDSAcumulado.Params[1].Value := dtFin.DateTime;
+      CDSAcumulado.Open;
 
-  repAcumulado.Print;
+      if CDSAcumulado.IsEmpty then
+      begin
+        ShowMessage('Não existe dados no relatório.');
+        exit;
+      end;
 
+      repAcumulado.Print;
+    end;
+    1:
+    begin
+      CDSDiscriminado.Close;
+
+      CDSDiscriminado.Params[0].Value := dtInicial.DateTime;
+      CDSDiscriminado.Params[1].Value := dtFin.DateTime;
+      CDSDiscriminado.Open;
+
+      if CDSDiscriminado.IsEmpty then
+      begin
+        ShowMessage('Não existe dados no relatório.');
+        exit;
+      end;
+
+      repDiscriminado.Print;
+    end;
+
+  end;
 end;
 
 procedure Tfrm_Relatorio.chkTodosClick(Sender: TObject);
 begin
   lblNome.Enabled := not chkTodos.Checked;
   edtNome.Enabled := not chkTodos.Checked;
+end;
+
+procedure Tfrm_Relatorio.FormShow(Sender: TObject);
+begin
+  dtInicial.DateTime  := Date-1;
+  dtFin.DateTime      := Date+1;
 end;
 
 end.
