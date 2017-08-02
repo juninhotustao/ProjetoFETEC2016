@@ -2,7 +2,8 @@ inherited frmVendas: TfrmVendas
   Caption = 'Vendas'
   ClientHeight = 396
   KeyPreview = True
-  ExplicitHeight = 424
+  ExplicitWidth = 747
+  ExplicitHeight = 425
   PixelsPerInch = 96
   TextHeight = 13
   inherited ToolBar1: TToolBar
@@ -132,19 +133,19 @@ inherited frmVendas: TfrmVendas
     Top = 343
     ExplicitTop = 343
     inherited Label1: TLabel
-      Left = 13
+      Left = 42
       Width = 166
       Height = 23
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
       Font.Name = 'Verdana'
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 13
+      ExplicitLeft = 42
       ExplicitWidth = 166
       ExplicitHeight = 23
     end
     object Label2: TLabel [1]
-      Left = 455
+      Left = 484
       Top = 11
       Width = 73
       Height = 23
@@ -161,7 +162,7 @@ inherited frmVendas: TfrmVendas
       StyleElements = [seClient, seBorder]
     end
     inherited Edit1: TEdit
-      Left = 181
+      Left = 210
       Top = 5
       Width = 268
       Height = 44
@@ -171,13 +172,13 @@ inherited frmVendas: TfrmVendas
       Font.Style = [fsBold]
       ParentFont = False
       OnExit = Edit1Exit
-      ExplicitLeft = 181
+      ExplicitLeft = 210
       ExplicitTop = 5
       ExplicitWidth = 268
       ExplicitHeight = 44
     end
     object Edit2: TEdit
-      Left = 525
+      Left = 554
       Top = 5
       Width = 149
       Height = 44
@@ -191,6 +192,19 @@ inherited frmVendas: TfrmVendas
       TabOrder = 1
       Text = '0,000'
       OnExit = Edit2Exit
+    end
+    object btnZerarEstoque: TButton
+      Left = 2
+      Top = 7
+      Width = 20
+      Height = 36
+      Hint = 'Deletar os pedidos'
+      ImageIndex = 31
+      Images = Icones
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      OnClick = btnZerarEstoqueClick
     end
   end
   inherited DTS: TSQLDataSet
@@ -282,7 +296,7 @@ inherited frmVendas: TfrmVendas
   end
   inherited Icones: TImageList
     Bitmap = {
-      494C01012C00C001980210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012C00C0019C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

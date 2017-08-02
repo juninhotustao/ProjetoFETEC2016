@@ -47,6 +47,7 @@ type
     CDSVEN_DATA: TSQLTimeStampField;
     lblData: TLabel;
     dtLancamento: TwwDBDateTimePicker;
+    btnZerarEstoque: TButton;
     procedure btn_novClick(Sender: TObject);
     procedure Edit1Exit(Sender: TObject);
     procedure Edit2Exit(Sender: TObject);
@@ -72,6 +73,7 @@ type
     procedure DExcluir1Click(Sender: TObject);
     procedure CDS_ITEMAfterDelete(DataSet: TDataSet);
     procedure btn_canClick(Sender: TObject);
+    procedure btnZerarEstoqueClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -99,6 +101,23 @@ begin
     Result := 0
   else
     Result := DMRet.OpenSQL(TotalVenda, [CDSVEN_ID.AsInteger]);
+end;
+
+procedure TfrmVendas.btnZerarEstoqueClick(Sender: TObject);
+const
+  DELETE_VENDAS =
+    'DELETE FROM VENDA';
+begin
+  try
+    if MessageBox(Handle, 'Deseja continuar ?', 'ATENÇÃO', MB_ICONEXCLAMATION+MB_YESNO) = IDYES then
+      DMRet.ExecuteSQL(DELETE_VENDAS, [])
+    else
+      exit;
+
+    MessageBox(Handle, 'Concluído com sucesso!', 'ATENÇÃO', MB_OK);
+  except
+    MessageBox(Handle, 'Erro ao Excluir pedido', 'ATENÇÃO', MB_OK);
+  end;
 end;
 
 procedure TfrmVendas.btn_altClick(Sender: TObject);
